@@ -9,7 +9,7 @@
 import Foundation
 import AppKit
 
-enum Condition
+indirect enum Condition
 {
 	enum appType {
 		case isRunning
@@ -23,6 +23,8 @@ enum Condition
 	case application(path:String, type:appType)
 	case shellfile(file:String, type:shellType)
 	case shellscript(script:String, type:shellType)
+	case and(Condition, Condition)
+	case or(Condition, Condition)
 
 	func check() -> Bool {
 		switch self {
@@ -34,6 +36,10 @@ enum Condition
 			case .isRunning: return !apps.isEmpty && apps[0].isFinishedLaunching
 			case .isNotRunning: return apps.isEmpty
 			}
+		case .and(let c0, let c1):
+			return c0.check() && c1.check()
+		case .or(let c0, let c1):
+			return c0.check() || c1.check()
 		case .always:
 			return true
 		default:
@@ -42,7 +48,10 @@ enum Condition
 	}
 }
 
-enum Operation {
+indirect enum Sentence {
+	case iff(Condition, Sentence)
+	case ifelse(Condition, Sentence, Sentence)
+	case join(Sentence, Sentence)
 	case launch(path:String)
 	case activate(path:String)
 	case quit(path:String)
@@ -51,11 +60,10 @@ enum Operation {
 	case open(file:String, app:String)
 	case wait(seconds:Int)
 	case through
-	func execute() -> Bool {
+	func execute() {
 		switch self {
 		case .launch(let path):
-			let result = try? NSWorkspace().launchApplication(at: URL(fileURLWithPath: path), options: [], configuration: [:])
-			return result != nil
+			let result = try? NSWorkspace().launchApplication(at: URL(fileURLWithPath: path), options: [], configuration: [:])			
 //			return NSWorkspace().launchApplication(withBundleIdentifier: bundleIdentifier, options: [], additionalEventParamDescriptor: nil, launchIdentifier: nil)
 		case .quit(let path):
 			let testapps = NSWorkspace.shared().runningApplications;
@@ -69,69 +77,38 @@ enum Operation {
 			apps.forEach({ (app:NSRunningApplication) in
 				app.terminate()
 			})
-			return true
 		case .wait(let seconds):
 			Thread.sleep(forTimeInterval: TimeInterval(seconds))
-			return true
-		case .through:
-			return true
+		case .iff(let cond, let s):
+			if(cond.check()) { s.execute() }
+		case .ifelse(let cond, let t, let f):
+			cond.check() ? t.execute() : f.execute()
+		case .join(let s0, let s1):
+			s0.execute()
+			s1.execute()
 		default:
-			return true
+			break;
 		}
 	}
 }
-
-class Sentence {
-	var operation : Operation!
-	init(_ op:Operation) {
-		operation = op
-	}
-	func proc() -> Bool {
-		return operation.execute()
-	}
-}
-
-class SentenceWithCondition : Sentence {
-	var condition = Condition.always
-	var sentences = [Sentence]()
-	init() {
-		super.init(Operation.through)
-	}
-	override init(_ op:Operation) {
-		super.init(op);
-		assert(false);
-	}
-	override func proc() -> Bool {
-		if(condition.check()) {
-			for s in sentences {
-				if(!s.proc()) {
-					return false
-				}
-			}
-		}
-		return true
-	}
-}
-
 
 class Statement
 {
 	var timer : Timer!
-	var sentence = SentenceWithCondition()
+	var sentence : Sentence
 	
 	convenience init() {
 		self.init(path:"/Applications/QuickTime Player.app")
 	}
 	init(path:String) {
-		sentence.condition = Condition.application(path: path, type: .isNotRunning)
-		sentence.sentences = Array<Sentence>()
-		sentence.sentences.append(Sentence(Operation.launch(path:path)))
-		sentence.sentences.append(Sentence(Operation.wait(seconds:5)))
-		sentence.sentences.append(Sentence(Operation.quit(path:path)))
-		sentence.sentences.append(Sentence(Operation.wait(seconds:5)))
+		sentence = Sentence.ifelse(
+			Condition.application(path: path, type: .isNotRunning) 
+			,Sentence.launch(path:path)
+			,Sentence.quit(path:path)
+			)
 		timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(Statement.execute), userInfo: nil, repeats: true)
 	}
 	@objc func execute() {
-		sentence.proc()
+		sentence.execute()
 	}
 }
