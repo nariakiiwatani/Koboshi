@@ -105,10 +105,17 @@ class Statement
 			Condition.application(path: path, type: .isNotRunning) 
 			,Sentence.launch(path:path)
 			,Sentence.quit(path:path)
-			)
-		timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(Statement.execute), userInfo: nil, repeats: true)
+		)
+		timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: {_ in 
+			self.executeAsync()
+		})
 	}
-	@objc func execute() {
-		sentence.execute()
+	func execute() {
+		self.sentence.execute()
+	}
+	func executeAsync() {
+		DispatchQueue.global(qos:.background).async {
+			self.execute()
+		}
 	}
 }
