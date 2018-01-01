@@ -52,6 +52,9 @@ indirect enum Sentence {
 	case iff(Condition, Sentence)
 	case ifelse(Condition, Sentence, Sentence)
 	case join(Sentence, Sentence)
+	case bbreak
+	case through
+
 	case launch(path:String)
 	case activate(path:String)
 	case quit(path:String)
@@ -59,11 +62,12 @@ indirect enum Sentence {
 	case shellString(script:String)
 	case open(file:String, app:String)
 	case wait(seconds:Int)
-	case through
-	func execute() {
+	
+	func execute() -> Bool {
 		switch self {
 		case .launch(let path):
 			_ = try? NSWorkspace().launchApplication(at: URL(fileURLWithPath: path), options: [], configuration: [:])
+			return true
 		case .quit(let path):
 			let apps = NSWorkspace.shared().runningApplications.filter{
 				$0.bundleURL?.path == path
@@ -71,17 +75,18 @@ indirect enum Sentence {
 			apps.forEach({ (app:NSRunningApplication) in
 				app.terminate()
 			})
+			return true
 		case .wait(let seconds):
 			Thread.sleep(forTimeInterval: TimeInterval(seconds))
+			return true
 		case .iff(let cond, let s):
-			if(cond.check()) { s.execute() }
+			return cond.check() ? s.execute() : true
 		case .ifelse(let cond, let t, let f):
-			cond.check() ? t.execute() : f.execute()
+			return cond.check() ? t.execute() : f.execute()
 		case .join(let s0, let s1):
-			s0.execute()
-			s1.execute()
-		default:
-			break;
+			return s0.execute() && s1.execute()
+		case .bbreak: return false
+		default: return true
 		}
 	}
 }
@@ -95,21 +100,22 @@ class Statement
 		self.init(path:"/Applications/QuickTime Player.app")
 	}
 	init(path:String) {
-		sentence = Sentence.ifelse(
+		sentence = Sentence.join(Sentence.ifelse(
 			Condition.application(path: path, type: .isNotRunning) 
 			,Sentence.launch(path:path)
-			,Sentence.quit(path:path)
-		)
+			,Sentence.bbreak)
+			,Sentence.launch(path:"/Applications/VLC.app")
+			)
 		timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: {_ in 
 			self.executeAsync()
 		})
 	}
-	func execute() {
-		self.sentence.execute()
+	func execute() -> Bool {
+		return self.sentence.execute()
 	}
 	func executeAsync() {
 		DispatchQueue.global(qos:.background).async {
-			self.execute()
+			_ = self.execute()
 		}
 	}
 }
