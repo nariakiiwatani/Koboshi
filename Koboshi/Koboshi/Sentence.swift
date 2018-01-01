@@ -11,6 +11,13 @@ import AppKit
 
 indirect enum Condition
 {
+	case and(Condition, Condition)
+	case nand(Condition, Condition)
+	case or(Condition, Condition)
+	case xor(Condition, Condition)
+	case always
+	case never
+	
 	enum appType {
 		case isRunning
 		case isNotRunning
@@ -19,12 +26,9 @@ indirect enum Condition
 		case succceed
 		case failed
 	}
-	case always
 	case application(path:String, type:appType)
 	case shellfile(file:String, type:shellType)
 	case shellscript(script:String, type:shellType)
-	case and(Condition, Condition)
-	case or(Condition, Condition)
 
 	func check() -> Bool {
 		switch self {
@@ -36,14 +40,13 @@ indirect enum Condition
 			case .isRunning: return !apps.isEmpty && apps[0].isFinishedLaunching
 			case .isNotRunning: return apps.isEmpty
 			}
-		case .and(let c0, let c1):
-			return c0.check() && c1.check()
-		case .or(let c0, let c1):
-			return c0.check() || c1.check()
-		case .always:
-			return true
-		default:
-			return true
+		case .and(let c0, let c1): return c0.check() && c1.check()
+		case .nand(let c0, let c1): return !(c0.check() && c1.check())
+		case .or(let c0, let c1): return c0.check() || c1.check()
+		case .xor(let c0, let c1): return c0.check() != c1.check()
+		case .always: return true
+		case .never: return true
+		default: return true
 		}
 	}
 }
