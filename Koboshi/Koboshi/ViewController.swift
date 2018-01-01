@@ -14,7 +14,7 @@ class ViewController: NSViewController {
 		super.viewDidLoad()
 		
 		// Do any additional setup after loading the view.
-		Statement(path:"/Applications/QuickTime Player.app")
+		_ = Statement()
 	}
 
 	override var representedObject: Any? {

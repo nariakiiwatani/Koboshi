@@ -63,14 +63,8 @@ indirect enum Sentence {
 	func execute() {
 		switch self {
 		case .launch(let path):
-			let result = try? NSWorkspace().launchApplication(at: URL(fileURLWithPath: path), options: [], configuration: [:])			
-//			return NSWorkspace().launchApplication(withBundleIdentifier: bundleIdentifier, options: [], additionalEventParamDescriptor: nil, launchIdentifier: nil)
+			_ = try? NSWorkspace().launchApplication(at: URL(fileURLWithPath: path), options: [], configuration: [:])
 		case .quit(let path):
-			let testapps = NSWorkspace.shared().runningApplications;
-			testapps.forEach({ (app:NSRunningApplication) in
-				print(app.localizedName ?? "no URL")
-				print(app.bundleURL?.path ?? "no URL")
-			})
 			let apps = NSWorkspace.shared().runningApplications.filter{
 				$0.bundleURL?.path == path
 			}
