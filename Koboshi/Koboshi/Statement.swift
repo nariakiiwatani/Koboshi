@@ -10,22 +10,21 @@ import Foundation
 
 class Statement
 {
-	var timer : Timer!
-	var sentence : Operator
-	
-	convenience init() {
-		self.init(url: URL(fileURLWithPath: "/Applications/QuickTime Player.app"))
+	var timer : Timer?
+	var sentence = Operator()
+	var isRunning : Bool {
+		return timer?.isValid ?? false
 	}
-	init(url:URL) {
-		sentence = 
-			Operator.ifelse(
-				Operator.applicationState(url: url, .notRunning)
-				,Operator.applicationProc(url: url, .launch)
-				,Operator.applicationProc(url: url, .activate)
-		)
-		timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: {_ in 
+	
+	init() {}
+	func run(withTimeInterval: TimeInterval) {
+		stop()
+		timer = Timer.scheduledTimer(withTimeInterval: withTimeInterval, repeats: true, block: {_ in 
 			self.executeAsync()
 		})
+	}
+	func stop() {
+		timer?.invalidate()
 	}
 	func execute() -> Bool {
 		return self.sentence.execute()

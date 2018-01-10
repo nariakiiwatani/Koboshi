@@ -14,8 +14,8 @@ class ViewController: NSViewController, NSTableViewDataSource {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		// Do any additional setup after loading the view.
-		statements.append(StatementInfo())
+		
+		statements.append(StatementInfo(launchApplicationIfNotRunning: URL(fileURLWithPath: "/Applications/System Preferences.app")))
 	}
 
 	override var representedObject: Any? {

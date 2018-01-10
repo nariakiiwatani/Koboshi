@@ -11,7 +11,23 @@ import Foundation
 class StatementInfo : NSObject
 {
 	var name : String = "new item"
-	var enabled : Bool = false
+	var enabled : Bool {
+		set {
+			newValue ? statement.run(withTimeInterval:1) : statement.stop()
+		}
+		get {
+			return statement.isRunning
+		}
+	}
 	
-	var statement : Statement!
+	var statement : Statement = Statement()
+	
+	init(launchApplicationIfNotRunning url:URL, withTimeInterval interval:TimeInterval = 1) {
+		name = "watchdog for " + url.lastPathComponent
+		statement.sentence = Operator.ifelse(
+			Operator.applicationState(url: url, .notRunning)
+			,Operator.applicationProc(url: url, .launch)
+			,Operator.applicationProc(url: url, .activate)
+		)
+	}
 }

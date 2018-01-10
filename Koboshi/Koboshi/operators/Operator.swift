@@ -10,6 +10,10 @@ import Foundation
 
 indirect enum Operator {
 	
+	init() {
+		self = .none
+	}
+	case none
 	case always
 	case never
 	case and(Operator, Operator)
@@ -27,6 +31,7 @@ indirect enum Operator {
 
 	func execute() -> Bool {
 		switch self {
+		case .none: assert(false); return true
 		case .always: return true
 		case .never: return false
 		case let .and(l,r): return l.execute() && r.execute()
