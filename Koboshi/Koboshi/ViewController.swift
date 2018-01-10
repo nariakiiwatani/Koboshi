@@ -8,13 +8,14 @@
 
 import Cocoa
 
-class ViewController: NSViewController {
+class ViewController: NSViewController, NSTableViewDataSource {
 
+	var statements : [StatementInfo] = []
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		// Do any additional setup after loading the view.
-		_ = Statement()
+		statements.append(StatementInfo())
 	}
 
 	override var representedObject: Any? {
@@ -23,6 +24,12 @@ class ViewController: NSViewController {
 		}
 	}
 
-
+	func numberOfRows(in tableView: NSTableView) -> Int {
+		return statements.count
+	}
+	
+	func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
+		return statements[row]
+	}
 }
 
