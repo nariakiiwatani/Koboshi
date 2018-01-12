@@ -9,7 +9,22 @@
 import Foundation
 import SwiftyJSON
 
-indirect enum Operator {
+protocol JsonConvertibleOperator {
+	init(withJSON json:JSON)
+	var type : String{get}
+	var args : Any{get}
+	var json : JSON{get}
+}
+
+extension JsonConvertibleOperator {
+	var json : JSON {
+		return [
+			"type" : JSON(type),
+			"args" : JSON(args)
+		]
+	}
+}
+indirect enum Operator : JsonConvertibleOperator {
 	
 	init() {
 		self = .none
@@ -67,13 +82,15 @@ indirect enum Operator {
 		case .anyway: return "anyway"
 		case .ignore: return "ignore"
 
-		default: return ""
-//		case let .applicationState(_,state): return state.type
-//		case let .applicationProc(_,proc): return proc.type
+		case let .applicationState(_,state): return "appState."+state.type
+		case let .applicationProc(_,proc): return "appProc."+proc.type
 		}
 	}
-	var arg : Any {
+	var args : Any {
 		switch self {
+		case .none,
+		     .always,
+		     .never: return []
 		case let .and(l,r),
 		     let .nand(l,r),
 		     let .or(l,r),
@@ -84,10 +101,9 @@ indirect enum Operator {
 		case let .anyway(o),
 		     let .ignore(o): return o.json
 			
-//		case let .applicationState(url, state): return state.execute(url)
-//		case let .applicationProc(url, proc): return proc.execute(url)
+		case let .applicationState(url, state): return ["url":url.path, "args":state.args]
+		case let .applicationProc(url, proc): return ["url":url.path, "args":proc.args]
 			
-		default: return [:]
 		}
 	}
 	init(withJSON json:JSON) {
@@ -105,14 +121,20 @@ indirect enum Operator {
 		case "ifelse":	self = .ifelse(Operator(withJSON: args[0]), Operator(withJSON: args[1]), Operator(withJSON: args[2]))
 		case "anyway":	self = .anyway(Operator(withJSON: args))
 		case "ignore":	self = .ignore(Operator(withJSON: args))
+		case let type where type.stringValue.hasPrefix("appState."):
+			let childJson: JSON = [
+				"type" : type.stringValue.components(separatedBy: ".")[1],
+				"args" : args["args"]
+			]
+			self = .applicationState(url:URL(fileURLWithPath: args["url"].stringValue), Operator.AppState(withJSON: childJson))
+		case let type where type.stringValue.hasPrefix("appProc."):
+			let childJson: JSON = [
+				"type" : type.stringValue.components(separatedBy: ".")[1],
+				"args" : args["args"]
+			]
+			self = .applicationProc(url:URL(fileURLWithPath: args["url"].stringValue), Operator.AppProc(withJSON: childJson))
 		default: self = .none
 		}
-	}
-	var json : JSON {
-		return [
-			"type" : JSON(type),
-			"args" : JSON(arg)
-			]
 	}
 }
 

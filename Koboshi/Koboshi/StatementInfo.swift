@@ -24,10 +24,13 @@ class StatementInfo : NSObject
 	
 	init(launchApplicationIfNotRunning url:URL, withTimeInterval interval:TimeInterval = 1) {
 		name = "watchdog for " + url.lastPathComponent
-		statement.sentence = Operator.ifelse(
+		var op = Operator.ifelse(
 			Operator.applicationState(url: url, .notRunning)
 			,Operator.applicationProc(url: url, .launch)
 			,Operator.applicationProc(url: url, .activate)
 		)
+		print(op.json.description)
+		statement.sentence = Operator(withJSON: op.json)
+		
 	}
 }
