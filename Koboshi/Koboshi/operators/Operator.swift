@@ -7,24 +7,8 @@
 //
 
 import Foundation
-import SwiftyJSON
 
-protocol JsonConvertibleOperator {
-	init(withJSON json:JSON)
-	var type : String{get}
-	var args : Any{get}
-	var json : JSON{get}
-}
-
-extension JsonConvertibleOperator {
-	var json : JSON {
-		return [
-			"type" : JSON(type),
-			"args" : JSON(args)
-		]
-	}
-}
-indirect enum Operator : JsonConvertibleOperator {
+indirect enum Operator {
 	
 	init() {
 		self = .none
@@ -65,8 +49,28 @@ indirect enum Operator : JsonConvertibleOperator {
 			
 		}
 	}
+}
 
-	// MARK: - JSONConvertible
+
+//MARK: - Json
+import SwiftyJSON
+
+protocol JsonConvertibleOperator {
+	init(withJSON json:JSON)
+	var type : String{get}
+	var args : Any{get}
+	var json : JSON{get}
+}
+
+extension JsonConvertibleOperator {
+	var json : JSON {
+		return [
+			"type" : JSON(type),
+			"args" : JSON(args)
+		]
+	}
+}
+extension Operator : JsonConvertibleOperator {
 	var type : String {
 		switch self {
 		case .none: return "none"
@@ -81,7 +85,7 @@ indirect enum Operator : JsonConvertibleOperator {
 		case .ifelse: return "ifelse"
 		case .anyway: return "anyway"
 		case .ignore: return "ignore"
-
+			
 		case let .applicationState(_,state): return "appState."+state.type
 		case let .applicationProc(_,proc): return "appProc."+proc.type
 		}

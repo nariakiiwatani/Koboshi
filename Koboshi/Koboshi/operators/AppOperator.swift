@@ -8,22 +8,13 @@
 
 import Foundation
 import AppKit
-import SwiftyJSON
 
 extension Operator {
-	enum AppState : JsonConvertibleOperator {
+	enum AppState {
 		case none
 		case running
 		case notRunning
 		case active
-		init(withJSON json:JSON) {
-			switch json["type"] {
-			case "running": self = .running
-			case "notRunning": self = .notRunning
-			case "active": self = .active
-			default: self = .none
-			}
-		}
 		func execute(_ url:URL) -> Bool {
 			let apps = NSWorkspace.shared().runningApplications.filter{
 				$0.bundleURL == url
@@ -44,32 +35,13 @@ extension Operator {
 					})
 			}
 		}
-		var type : String {
-			switch self {
-			case .none: return "none"
-			case .running: return "running"
-			case .notRunning: return "notRunning"
-			case .active: return "active"
-			}
-		}
-		var args : Any {
-			return []
-		}
 	}
 	
-	enum AppProc : JsonConvertibleOperator {
+	enum AppProc {
 		case none
 		case launch
 		case activate
 		case terminate
-		init(withJSON json:JSON) {
-			switch json["type"] {
-			case "launch": self = .launch
-			case "activate": self = .activate
-			case "terminate": self = .terminate
-			default: self = .none
-			}
-		}
 		func execute(_ url:URL) -> Bool {
 			let apps = NSWorkspace.shared().runningApplications.filter{
 				$0.bundleURL == url
@@ -90,17 +62,51 @@ extension Operator {
 				return true
 			}
 		}
-		var type : String {
-			switch self {
-			case .none: return "none"
-			case .launch: return "launch"
-			case .activate: return "activate"
-			case .terminate: return "terminate"
-			}
-		}
-		var args : Any {
-			return []
-		}
 	}
 }
 
+//MARK: - Json
+import SwiftyJSON
+
+extension Operator.AppState : JsonConvertibleOperator {
+	init(withJSON json:JSON) {
+		switch json["type"] {
+		case "running": self = .running
+		case "notRunning": self = .notRunning
+		case "active": self = .active
+		default: self = .none
+		}
+	}
+	var type : String {
+		switch self {
+		case .none: return "none"
+		case .running: return "running"
+		case .notRunning: return "notRunning"
+		case .active: return "active"
+		}
+	}
+	var args : Any {
+		return []
+	}
+}
+extension Operator.AppProc : JsonConvertibleOperator {
+	init(withJSON json:JSON) {
+		switch json["type"] {
+		case "launch": self = .launch
+		case "activate": self = .activate
+		case "terminate": self = .terminate
+		default: self = .none
+		}
+	}
+	var type : String {
+		switch self {
+		case .none: return "none"
+		case .launch: return "launch"
+		case .activate: return "activate"
+		case .terminate: return "terminate"
+		}
+	}
+	var args : Any {
+		return []
+	}
+}
