@@ -15,13 +15,17 @@ class Statement
 	var isRunning : Bool {
 		return timer?.isValid ?? false
 	}
+	var interval : Double = 1
 	
 	init() {}
-	func run(withTimeInterval: TimeInterval) {
+	private func run(withTimeInterval interval:TimeInterval) {
 		stop()
-		timer = Timer.scheduledTimer(withTimeInterval: withTimeInterval, repeats: true, block: {_ in 
+		timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true, block: {_ in 
 			self.executeAsync()
 		})
+	}
+	func run() {
+		run(withTimeInterval:interval)
 	}
 	func stop() {
 		timer?.invalidate()

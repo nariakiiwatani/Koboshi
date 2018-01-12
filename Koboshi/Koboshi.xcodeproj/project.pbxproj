@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		818EB6AF2005E3D80063A4B4 /* StatementInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818EB6AE2005E3D80063A4B4 /* StatementInfo.swift */; };
+		818EB6C52008B0490063A4B4 /* StatementConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818EB6C42008B0490063A4B4 /* StatementConvertible.swift */; };
 		81D590161FF37B7F008B4326 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D590151FF37B7F008B4326 /* AppDelegate.swift */; };
 		81D590181FF37B7F008B4326 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D590171FF37B7F008B4326 /* ViewController.swift */; };
 		81D5901A1FF37B7F008B4326 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 81D590191FF37B7F008B4326 /* Assets.xcassets */; };
@@ -24,6 +25,7 @@
 		17104F9CDACC2AEB30A30A89 /* Pods-Koboshi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Koboshi.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Koboshi/Pods-Koboshi.debug.xcconfig"; sourceTree = "<group>"; };
 		20FEC577EDF0E78ED55DD941 /* Pods_Koboshi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Koboshi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		818EB6AE2005E3D80063A4B4 /* StatementInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatementInfo.swift; sourceTree = "<group>"; };
+		818EB6C42008B0490063A4B4 /* StatementConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatementConvertible.swift; sourceTree = "<group>"; };
 		81D590121FF37B7F008B4326 /* Koboshi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Koboshi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		81D590151FF37B7F008B4326 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		81D590171FF37B7F008B4326 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 				81D5901E1FF37B7F008B4326 /* Info.plist */,
 				81E3EAA31FFAA224005039E3 /* Statement.swift */,
 				818EB6AE2005E3D80063A4B4 /* StatementInfo.swift */,
+				818EB6C42008B0490063A4B4 /* StatementConvertible.swift */,
 			);
 			path = Koboshi;
 			sourceTree = "<group>";
@@ -234,6 +237,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81E3EAAF1FFB1CD2005039E3 /* FileOperator.swift in Sources */,
+				818EB6C52008B0490063A4B4 /* StatementConvertible.swift in Sources */,
 				81E3EAAD1FFB1CC6005039E3 /* ShellScriptOperator.swift in Sources */,
 				81D590181FF37B7F008B4326 /* ViewController.swift in Sources */,
 				81D590161FF37B7F008B4326 /* AppDelegate.swift in Sources */,
