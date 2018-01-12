@@ -7,14 +7,14 @@
 //
 
 import Cocoa
+import SwiftyJSON
 
 class ViewController: NSViewController, NSTableViewDataSource {
 
 	var statements : [StatementInfo] = []
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
-		
+
 		statements.append(StatementInfo(launchApplicationIfNotRunning: URL(fileURLWithPath: "/Applications/System Preferences.app")))
 	}
 

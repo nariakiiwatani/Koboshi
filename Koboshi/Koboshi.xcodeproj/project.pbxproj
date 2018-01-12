@@ -17,9 +17,12 @@
 		81E3EAAB1FFB1C78005039E3 /* Operator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E3EAA91FFB1C78005039E3 /* Operator.swift */; };
 		81E3EAAD1FFB1CC6005039E3 /* ShellScriptOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E3EAAC1FFB1CC6005039E3 /* ShellScriptOperator.swift */; };
 		81E3EAAF1FFB1CD2005039E3 /* FileOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E3EAAE1FFB1CD2005039E3 /* FileOperator.swift */; };
+		BCA3C7FB7410B3DBB7019DF1 /* Pods_Koboshi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20FEC577EDF0E78ED55DD941 /* Pods_Koboshi.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		17104F9CDACC2AEB30A30A89 /* Pods-Koboshi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Koboshi.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Koboshi/Pods-Koboshi.debug.xcconfig"; sourceTree = "<group>"; };
+		20FEC577EDF0E78ED55DD941 /* Pods_Koboshi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Koboshi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		818EB6AE2005E3D80063A4B4 /* StatementInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatementInfo.swift; sourceTree = "<group>"; };
 		81D590121FF37B7F008B4326 /* Koboshi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Koboshi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		81D590151FF37B7F008B4326 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -32,6 +35,7 @@
 		81E3EAA91FFB1C78005039E3 /* Operator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operator.swift; sourceTree = "<group>"; };
 		81E3EAAC1FFB1CC6005039E3 /* ShellScriptOperator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShellScriptOperator.swift; sourceTree = "<group>"; };
 		81E3EAAE1FFB1CD2005039E3 /* FileOperator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileOperator.swift; sourceTree = "<group>"; };
+		B77CE25552A444E47D7C8099 /* Pods-Koboshi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Koboshi.release.xcconfig"; path = "Pods/Target Support Files/Pods-Koboshi/Pods-Koboshi.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,17 +43,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BCA3C7FB7410B3DBB7019DF1 /* Pods_Koboshi.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		194AF4F035121A8988CCDF7C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				20FEC577EDF0E78ED55DD941 /* Pods_Koboshi.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		725CF3D5C4059C7D3A8CF6E7 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				17104F9CDACC2AEB30A30A89 /* Pods-Koboshi.debug.xcconfig */,
+				B77CE25552A444E47D7C8099 /* Pods-Koboshi.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		81D590091FF37B7F008B4326 = {
 			isa = PBXGroup;
 			children = (
 				81D590141FF37B7F008B4326 /* Koboshi */,
 				81D590131FF37B7F008B4326 /* Products */,
+				725CF3D5C4059C7D3A8CF6E7 /* Pods */,
+				194AF4F035121A8988CCDF7C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -94,9 +118,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 81D590211FF37B80008B4326 /* Build configuration list for PBXNativeTarget "Koboshi" */;
 			buildPhases = (
+				83525C6EBBDB61F8CA8DA0DF /* [CP] Check Pods Manifest.lock */,
 				81D5900E1FF37B7F008B4326 /* Sources */,
 				81D5900F1FF37B7F008B4326 /* Frameworks */,
 				81D590101FF37B7F008B4326 /* Resources */,
+				63D992295482C05C44DFA0B5 /* [CP] Embed Pods Frameworks */,
+				7A8F3EB6115C2BE1E9AF01CC /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -152,6 +179,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		63D992295482C05C44DFA0B5 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Koboshi/Pods-Koboshi-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7A8F3EB6115C2BE1E9AF01CC /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Koboshi/Pods-Koboshi-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		83525C6EBBDB61F8CA8DA0DF /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		81D5900E1FF37B7F008B4326 /* Sources */ = {
@@ -277,6 +352,7 @@
 		};
 		81D590221FF37B80008B4326 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 17104F9CDACC2AEB30A30A89 /* Pods-Koboshi.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -290,6 +366,7 @@
 		};
 		81D590231FF37B80008B4326 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B77CE25552A444E47D7C8099 /* Pods-Koboshi.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
