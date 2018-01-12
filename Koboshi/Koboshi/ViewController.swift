@@ -16,6 +16,15 @@ class ViewController: NSViewController, NSTableViewDataSource {
 		super.viewDidLoad()
 
 		statements.append(StatementInfo(launchApplicationIfNotRunning: URL(fileURLWithPath: "/Applications/System Preferences.app")))
+		let statement = StatementInfo()
+		let url = URL(fileURLWithPath:"/Users/nariakiiwatani/Works/Koboshi/tmp.txt")
+		statement.statement.sentence = Operator.ifelse(
+			Operator.fileState(url: url, .exist)
+			,Operator.fileProc(url: url, .delete)
+			,Operator.fileProc(url: url, .create)
+			)
+		statement.statement.interval = 5
+		statements.append(statement)
 	}
 
 	override var representedObject: Any? {

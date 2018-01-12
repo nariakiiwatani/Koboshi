@@ -29,9 +29,12 @@ indirect enum Operator {
 	case applicationState(url:URL, AppState)
 	case applicationProc(url:URL, AppProc)
 
+	case fileState(url:URL, FileState)
+	case fileProc(url:URL, FileProc)
+
 	func execute() -> Bool {
 		switch self {
-		case .none: assert(false); return true
+		case .none: return true
 		case .always: return true
 		case .never: return false
 		case let .and(l,r): return l.execute() && r.execute()
@@ -46,7 +49,10 @@ indirect enum Operator {
 			
 		case let .applicationState(url, state): return state.execute(url)
 		case let .applicationProc(url, proc): return proc.execute(url)
-			
+
+		case let .fileState(url, state): return state.execute(url)
+		case let .fileProc(url, proc): return proc.execute(url)
+
 		}
 	}
 }
@@ -88,7 +94,10 @@ extension Operator : JsonConvertibleOperator {
 			
 		case let .applicationState(_,state): return "appState."+state.type
 		case let .applicationProc(_,proc): return "appProc."+proc.type
-		}
+
+		case let .fileState(_,state): return "fileState."+state.type
+		case let .fileProc(_,proc): return "fileProc."+proc.type
+}
 	}
 	var args : Any {
 		switch self {
@@ -107,6 +116,9 @@ extension Operator : JsonConvertibleOperator {
 			
 		case let .applicationState(url, state): return ["url":url.path, "args":state.args]
 		case let .applicationProc(url, proc): return ["url":url.path, "args":proc.args]
+			
+		case let .fileState(url, state): return ["url":url.path, "args":state.args]
+		case let .fileProc(url, proc): return ["url":url.path, "args":proc.args]
 			
 		}
 	}
@@ -137,6 +149,18 @@ extension Operator : JsonConvertibleOperator {
 				"args" : args["args"]
 			]
 			self = .applicationProc(url:URL(fileURLWithPath: args["url"].stringValue), Operator.AppProc(withJSON: childJson))
+		case let type where type.stringValue.hasPrefix("fileState."):
+			let childJson: JSON = [
+				"type" : type.stringValue.components(separatedBy: ".")[1],
+				"args" : args["args"]
+			]
+			self = .fileState(url:URL(fileURLWithPath: args["url"].stringValue), Operator.FileState(withJSON: childJson))
+		case let type where type.stringValue.hasPrefix("fileProc."):
+			let childJson: JSON = [
+				"type" : type.stringValue.components(separatedBy: ".")[1],
+				"args" : args["args"]
+			]
+			self = .fileProc(url:URL(fileURLWithPath: args["url"].stringValue), Operator.FileProc(withJSON: childJson))
 		default: self = .none
 		}
 	}

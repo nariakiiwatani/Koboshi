@@ -54,6 +54,7 @@ class StatementInfo : NSObject
 	
 	var statement : Statement = Statement()
 	
+	override init() {}
 	init(launchApplicationIfNotRunning url:URL) {
 		name = "watchdog for " + url.lastPathComponent
 		statement.sentence = Operator.ifelse(
