@@ -31,6 +31,8 @@ indirect enum Operator {
 
 	case fileState(url:URL, FileState)
 	case fileProc(url:URL, FileProc)
+	
+	case shellScriptExec(program:URL, ShellScriptExec)
 
 	func execute() -> Bool {
 		switch self {
@@ -52,6 +54,9 @@ indirect enum Operator {
 
 		case let .fileState(url, state): return state.execute(url)
 		case let .fileProc(url, proc): return proc.execute(url)
+			
+		case let .shellScriptExec(program, exec): return exec.execute(program)
+
 
 		}
 	}
@@ -97,7 +102,9 @@ extension Operator : JsonConvertibleOperator {
 
 		case let .fileState(_,state): return "fileState."+state.type
 		case let .fileProc(_,proc): return "fileProc."+proc.type
-}
+
+		case let .shellScriptExec(_,exec): return "shellScriptExec."+exec.type
+		}
 	}
 	var args : Any {
 		switch self {
@@ -119,7 +126,8 @@ extension Operator : JsonConvertibleOperator {
 			
 		case let .fileState(url, state): return ["url":url.path, "args":state.args]
 		case let .fileProc(url, proc): return ["url":url.path, "args":proc.args]
-			
+		
+		case let .shellScriptExec(program,exec): return ["program":program.path, "args":exec.args]
 		}
 	}
 	init(withJSON json:JSON) {
@@ -161,6 +169,12 @@ extension Operator : JsonConvertibleOperator {
 				"args" : args["args"]
 			]
 			self = .fileProc(url:URL(fileURLWithPath: args["url"].stringValue), Operator.FileProc(withJSON: childJson))
+		case let type where type.stringValue.hasPrefix("shellScriptExec."):
+			let childJson: JSON = [
+				"type" : type.stringValue.components(separatedBy: ".")[1],
+				"args" : args["args"]
+			]
+			self = .shellScriptExec(program:URL(fileURLWithPath: args["program"].stringValue), Operator.ShellScriptExec(withJSON: childJson))
 		default: self = .none
 		}
 	}

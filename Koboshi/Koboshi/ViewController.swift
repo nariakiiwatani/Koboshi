@@ -17,11 +17,12 @@ class ViewController: NSViewController, NSTableViewDataSource {
 
 		statements.append(StatementInfo(launchApplicationIfNotRunning: URL(fileURLWithPath: "/Applications/System Preferences.app")))
 		let statement = StatementInfo()
-		let url = URL(fileURLWithPath:"/Users/nariakiiwatani/Works/Koboshi/tmp.txt")
+		let url = URL(fileURLWithPath:"/Users/nariakiiwatani/Desktop/success.sh")
+		let outurl = URL(fileURLWithPath:"/Users/nariakiiwatani/Desktop/tmp.txt")
 		statement.statement.sentence = Operator.ifelse(
-			Operator.fileState(url: url, .exist)
-			,Operator.fileProc(url: url, .delete)
-			,Operator.fileProc(url: url, .create)
+			Operator.shellScriptExec(program: URL(fileURLWithPath:"/bin/sh"), .command("echo", ["0"]))
+			,Operator.fileProc(url: outurl, .create)
+			,Operator.fileProc(url: outurl, .delete)
 			)
 		statement.statement.interval = 5
 		statements.append(statement)
