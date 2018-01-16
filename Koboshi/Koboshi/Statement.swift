@@ -23,6 +23,7 @@ class Statement
 		timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true, block: {_ in 
 			self.executeAsync()
 		})
+		executeAsync()
 	}
 	func run() {
 		run(withTimeInterval:interval)
