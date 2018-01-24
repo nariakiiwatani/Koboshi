@@ -16,6 +16,8 @@
 		81E3EAAB1FFB1C78005039E3 /* Operator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E3EAA91FFB1C78005039E3 /* Operator.swift */; };
 		81E3EAAD1FFB1CC6005039E3 /* ShellScriptOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E3EAAC1FFB1CC6005039E3 /* ShellScriptOperator.swift */; };
 		81E3EAAF1FFB1CD2005039E3 /* FileOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E3EAAE1FFB1CD2005039E3 /* FileOperator.swift */; };
+		81FD6D6020181AD6006CF79B /* Trigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FD6D5F20181AD6006CF79B /* Trigger.swift */; };
+		81FD6D6220181AED006CF79B /* IntervalTrigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FD6D6120181AED006CF79B /* IntervalTrigger.swift */; };
 		BCA3C7FB7410B3DBB7019DF1 /* Pods_Koboshi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20FEC577EDF0E78ED55DD941 /* Pods_Koboshi.framework */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +35,8 @@
 		81E3EAA91FFB1C78005039E3 /* Operator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operator.swift; sourceTree = "<group>"; };
 		81E3EAAC1FFB1CC6005039E3 /* ShellScriptOperator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShellScriptOperator.swift; sourceTree = "<group>"; };
 		81E3EAAE1FFB1CD2005039E3 /* FileOperator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileOperator.swift; sourceTree = "<group>"; };
+		81FD6D5F20181AD6006CF79B /* Trigger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trigger.swift; sourceTree = "<group>"; };
+		81FD6D6120181AED006CF79B /* IntervalTrigger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntervalTrigger.swift; sourceTree = "<group>"; };
 		B77CE25552A444E47D7C8099 /* Pods-Koboshi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Koboshi.release.xcconfig"; path = "Pods/Target Support Files/Pods-Koboshi/Pods-Koboshi.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -93,6 +97,7 @@
 				81D5901B1FF37B7F008B4326 /* Main.storyboard */,
 				81D5901E1FF37B7F008B4326 /* Info.plist */,
 				81E3EAA31FFAA224005039E3 /* Statement.swift */,
+				81FD6D5E20181AD6006CF79B /* triggers */,
 			);
 			path = Koboshi;
 			sourceTree = "<group>";
@@ -106,6 +111,15 @@
 				81E3EAAE1FFB1CD2005039E3 /* FileOperator.swift */,
 			);
 			path = operators;
+			sourceTree = "<group>";
+		};
+		81FD6D5E20181AD6006CF79B /* triggers */ = {
+			isa = PBXGroup;
+			children = (
+				81FD6D5F20181AD6006CF79B /* Trigger.swift */,
+				81FD6D6120181AED006CF79B /* IntervalTrigger.swift */,
+			);
+			path = triggers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -230,10 +244,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81FD6D6220181AED006CF79B /* IntervalTrigger.swift in Sources */,
 				81E3EAAF1FFB1CD2005039E3 /* FileOperator.swift in Sources */,
 				81E3EAAD1FFB1CC6005039E3 /* ShellScriptOperator.swift in Sources */,
 				81D590181FF37B7F008B4326 /* ViewController.swift in Sources */,
 				81D590161FF37B7F008B4326 /* AppDelegate.swift in Sources */,
+				81FD6D6020181AD6006CF79B /* Trigger.swift in Sources */,
 				81E3EAAB1FFB1C78005039E3 /* Operator.swift in Sources */,
 				81E3EAA41FFAA224005039E3 /* Statement.swift in Sources */,
 				81E3EAAA1FFB1C78005039E3 /* AppOperator.swift in Sources */,

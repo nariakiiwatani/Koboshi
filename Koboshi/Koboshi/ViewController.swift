@@ -15,17 +15,18 @@ class ViewController: NSViewController, NSTableViewDataSource {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		statements.append(StatementInfo(launchApplicationIfNotRunning: URL(fileURLWithPath: "/Applications/System Preferences.app")))
-		let statement = StatementInfo()
-		let url = URL(fileURLWithPath:"/Users/nariakiiwatani/Desktop/success.sh")
+//		statements.append(StatementInfo(launchApplicationIfNotRunning: URL(fileURLWithPath: "/Applications/System Preferences.app")))
+		var statement = StatementInfo(withTrigger:IntervalTrigger(withTimeInterval: 5))
 		let outurl = URL(fileURLWithPath:"/Users/nariakiiwatani/Desktop/tmp.txt")
-		statement.statement.sentence = Operator.ifelse(
-			Operator.shellScriptExec(program: URL(fileURLWithPath:"/bin/sh"), .command("echo", ["0"]))
-			,Operator.fileProc(url: outurl, .create)
+		statement.statement.op = Operator.ifelse(
+			Operator.fileState(url: outurl, .exist)
 			,Operator.fileProc(url: outurl, .delete)
+			,Operator.fileProc(url: outurl, .create)
 			)
-		statement.statement.interval = 5
-		statements.append(statement)
+		statement.isRunning = true
+		let json = statement.json
+		print(json)
+		statements.append(StatementInfo(withJSON:json))
 	}
 
 	override var representedObject: Any? {

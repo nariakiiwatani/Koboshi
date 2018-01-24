@@ -730,7 +730,7 @@
                                                                                 <font key="font" metaFont="system"/>
                                                                             </buttonCell>
                                                                             <connections>
-                                                                                <binding destination="Ukm-4L-LDh" name="value" keyPath="objectValue.enabled" id="LlH-bQ-jsS"/>
+                                                                                <binding destination="Ukm-4L-LDh" name="value" keyPath="objectValue.isRunning" id="kzI-dc-jm8"/>
                                                                             </connections>
                                                                         </button>
                                                                     </subviews>
@@ -741,7 +741,7 @@
                                                                 </tableCellView>
                                                             </prototypeCellViews>
                                                         </tableColumn>
-                                                        <tableColumn identifier="" width="127" minWidth="40" maxWidth="1000" id="G4G-ZO-JRg">
+                                                        <tableColumn identifier="" width="127.5" minWidth="40" maxWidth="1000" id="G4G-ZO-JRg">
                                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
                                                                 <font key="font" metaFont="smallSystem"/>
                                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>

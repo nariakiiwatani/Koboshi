@@ -8,98 +8,81 @@
 
 import Foundation
 
-class Statement
+
+class Statement : TriggerDelegate
 {
-	var timer : Timer?
-	var sentence = Operator()
-	var isRunning : Bool {
-		return timer?.isValid ?? false
-	}
-	var interval : Double = 1
-	
-	init() {}
-	private func run(withTimeInterval interval:TimeInterval) {
-		stop()
-		timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true, block: {_ in 
-			self.executeAsync()
-		})
-		executeAsync()
-	}
-	func run() {
-		run(withTimeInterval:interval)
-	}
-	func stop() {
-		timer?.invalidate()
-	}
+	var op = Operator()
 	func execute() -> Bool {
-		return self.sentence.execute()
-	}
-	func executeAsync() {
-		DispatchQueue.global(qos:.background).async {
-			_ = self.execute()
-		}
+		return op.execute()
 	}
 }
 
 class StatementInfo : NSObject
 {
-	var name : String = "new item"
-	var enabled : Bool {
-		set {
-			newValue ? statement.run() : statement.stop()
+	var name : String = "New Item"
+	fileprivate var trigger : Trigger! {
+		willSet {
+			if trigger !== newValue {
+				trigger.enable = false
+			}
 		}
-		get {
-			return statement.isRunning
-		}
+		didSet { trigger.delegate = statement }
+	}
+	var statement = Statement() {
+		didSet { trigger.delegate = statement }
+	}
+	var isRunning : Bool {
+		set { trigger.enable = newValue }
+		get { return trigger.enable }
 	}
 	
-	var statement : Statement = Statement()
-	
-	override init() {}
-	init(launchApplicationIfNotRunning url:URL) {
+	init(withTrigger t:Trigger!) {
+		trigger = t
+		trigger.delegate = statement
+	}
+	deinit {
+		trigger.enable = false
+	}
+	convenience init(launchApplicationIfNotRunning url:URL) {
+		self.init(withTrigger: IntervalTrigger(withTimeInterval:1))
 		name = "watchdog for " + url.lastPathComponent
-		statement.sentence = Operator.ifelse(
+		statement.op = Operator.ifelse(
 			Operator.applicationState(url: url, .notRunning)
 			,Operator.applicationProc(url: url, .launch)
 			,Operator.applicationProc(url: url, .activate)
 		)
+		trigger.enable = true
 	}
 }
 
 // MARK: - Json
 import SwiftyJSON
 
-protocol JsonConvertible {
-	var json : JSON{get set}
-}
-
-extension StatementInfo : JsonConvertible {
+extension StatementInfo {
+	convenience init(withJSON json:JSON) {
+		self.init(withTrigger:TriggerType(withJSON:json["trigger"]).toTrigger())
+		name = json["name"].stringValue
+		statement.json = json["statement"]
+		isRunning = json["enabled"].boolValue
+	}
 	var json : JSON {
-		set(json) {
-			name = json["name"].stringValue
-			statement.json = json["statement"]
-			enabled = json["enabled"].boolValue
-		}
-		get {
-			return [
-				"name" : name,
-				"statement" : statement.json,
-				"enabled" : enabled
-			]
-		}
+		return [
+			"name" : name,
+			"statement" : statement.json,
+			"trigger" : trigger.type.json as Any,
+			"enabled" : isRunning
+		]
 	}
 }
 
-extension Statement : JsonConvertible {
+extension Statement {
 	var json : JSON {
 		set(json) {
-			sentence = Operator(withJSON:json["sentence"])
-			interval = json["interval"].doubleValue
+			op = Operator(withJSON:json["operator"])
 		}
 		get {
 			return [
-				"sentence" : sentence.json,
-				"interval" : interval
+				"operator" : op.json,
 			]
 		}
 	}
