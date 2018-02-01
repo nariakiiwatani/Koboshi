@@ -20,7 +20,7 @@ class Statement : TriggerDelegate
 class StatementInfo : NSObject
 {
 	var name : String = "New Item"
-	fileprivate var trigger : Trigger! {
+	var trigger : Trigger! {
 		willSet {
 			if trigger !== newValue {
 				trigger.enable = false

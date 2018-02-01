@@ -8,25 +8,36 @@
 
 import Cocoa
 import SwiftyJSON
+import SwiftOSC
 
 class ViewController: NSViewController, NSTableViewDataSource {
 
+	let client = OSCClient(address:"localhost", port:9000)
+	var oscServer = OSCServer(address:"", port:9000)
+	var oscDispatcher = OSCDispatcher()
 	var statements : [StatementInfo] = []
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		oscServer.delegate = oscDispatcher
 
 //		statements.append(StatementInfo(launchApplicationIfNotRunning: URL(fileURLWithPath: "/Applications/System Preferences.app")))
-		var statement = StatementInfo(withTrigger:IntervalTrigger(withTimeInterval: 5))
+//		var statement = StatementInfo(withTrigger:IntervalTrigger(withTimeInterval: 5))
+		var statement = StatementInfo(withTrigger:OSCTrigger(withComparator: Operator.OSCMessageCompare.compare(address: Operator.StringCompare.none, args: Operator.ArrayCompare.element(0,"stringArg"))))
 		let outurl = URL(fileURLWithPath:"/Users/nariakiiwatani/Desktop/tmp.txt")
 		statement.statement.op = Operator.ifelse(
 			Operator.fileState(url: outurl, .exist)
 			,Operator.fileProc(url: outurl, .delete)
 			,Operator.fileProc(url: outurl, .create)
 			)
-		statement.isRunning = true
+//		statement.isRunning = true
 		let json = statement.json
 		print(json)
-		statements.append(StatementInfo(withJSON:json))
+		statement = StatementInfo(withJSON:json)
+		print(statement.json)
+		oscDispatcher.add(statement.trigger as! OSCServerDelegateExt)
+		statement.isRunning = true
+		statements.append(statement)
+		oscServer.start()
 	}
 
 	override var representedObject: Any? {

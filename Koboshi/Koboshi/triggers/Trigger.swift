@@ -25,11 +25,12 @@ extension TriggerDelegate
 enum TriggerType {
 	case none
 	case interval(_:TimeInterval)
+	case osc(_:Operator.OSCMessageCompare)
 	
 	func toTrigger() -> Trigger? {
 		switch self {
-		case let .interval(i):
-			return IntervalTrigger(withTimeInterval:i)
+		case let .interval(i): return IntervalTrigger(withTimeInterval:i)
+		case let .osc(c): return OSCTrigger(withComparator:c)
 		default:
 			return nil
 		}
@@ -69,8 +70,8 @@ extension TriggerType : JsonConvertibleTrigger
 		let type = json["type"].stringValue
 		let args = json["args"]
 		switch type {
-		case "interval":
-			self = .interval(args["interval"].doubleValue)
+		case "interval": self = .interval(args["interval"].doubleValue)
+		case "osc": self = .osc(Operator.OSCMessageCompare(withJSON:args))
 		default:
 			self = .none
 		}
@@ -79,6 +80,7 @@ extension TriggerType : JsonConvertibleTrigger
 	var args: Any {
 		switch self {
 		case let .interval(i): return ["interval":i]
+		case let .osc(c): return c.json
 		default: return []
 		}
 	}
@@ -86,6 +88,7 @@ extension TriggerType : JsonConvertibleTrigger
 	var type: String {
 		switch self {
 		case .interval: return "interval"
+		case .osc: return "osc"
 		default: return "none"
 		}
 	}

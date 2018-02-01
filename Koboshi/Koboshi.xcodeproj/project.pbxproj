@@ -18,8 +18,31 @@
 		81E3EAAF1FFB1CD2005039E3 /* FileOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E3EAAE1FFB1CD2005039E3 /* FileOperator.swift */; };
 		81FD6D6020181AD6006CF79B /* Trigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FD6D5F20181AD6006CF79B /* Trigger.swift */; };
 		81FD6D6220181AED006CF79B /* IntervalTrigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FD6D6120181AED006CF79B /* IntervalTrigger.swift */; };
+		81FD6D6620181D6A006CF79B /* OSCTrigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FD6D6520181D6A006CF79B /* OSCTrigger.swift */; };
+		81FD6D68201837CF006CF79B /* StringOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FD6D67201837CE006CF79B /* StringOperator.swift */; };
+		81FD6D7B20183D61006CF79B /* SwiftOSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81FD6D7820183D1B006CF79B /* SwiftOSC.framework */; };
+		81FD6D7D2018417A006CF79B /* OSCMessageOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FD6D7C2018417A006CF79B /* OSCMessageOperator.swift */; };
+		81FD6D7F201848C0006CF79B /* ArrayOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FD6D7E201848C0006CF79B /* ArrayOperator.swift */; };
+		81FD6D8220186C72006CF79B /* OSCDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FD6D8120186C72006CF79B /* OSCDispatcher.swift */; };
 		BCA3C7FB7410B3DBB7019DF1 /* Pods_Koboshi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20FEC577EDF0E78ED55DD941 /* Pods_Koboshi.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		81FD6D7720183D1B006CF79B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 81FD6D7220183D1B006CF79B /* SwiftOSC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0339A3541D37FCEB0060ED91;
+			remoteInfo = SwiftOSC;
+		};
+		81FD6D7920183D1B006CF79B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 81FD6D7220183D1B006CF79B /* SwiftOSC.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 03AEB7B31D38280700F97DB1;
+			remoteInfo = SwiftOSCTests;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		17104F9CDACC2AEB30A30A89 /* Pods-Koboshi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Koboshi.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Koboshi/Pods-Koboshi.debug.xcconfig"; sourceTree = "<group>"; };
@@ -37,6 +60,12 @@
 		81E3EAAE1FFB1CD2005039E3 /* FileOperator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileOperator.swift; sourceTree = "<group>"; };
 		81FD6D5F20181AD6006CF79B /* Trigger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trigger.swift; sourceTree = "<group>"; };
 		81FD6D6120181AED006CF79B /* IntervalTrigger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntervalTrigger.swift; sourceTree = "<group>"; };
+		81FD6D6520181D6A006CF79B /* OSCTrigger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSCTrigger.swift; sourceTree = "<group>"; };
+		81FD6D67201837CE006CF79B /* StringOperator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringOperator.swift; sourceTree = "<group>"; };
+		81FD6D7220183D1B006CF79B /* SwiftOSC.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftOSC.xcodeproj; path = SwiftOSC/SwiftOSC.xcodeproj; sourceTree = "<group>"; };
+		81FD6D7C2018417A006CF79B /* OSCMessageOperator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSCMessageOperator.swift; sourceTree = "<group>"; };
+		81FD6D7E201848C0006CF79B /* ArrayOperator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayOperator.swift; sourceTree = "<group>"; };
+		81FD6D8120186C72006CF79B /* OSCDispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSCDispatcher.swift; sourceTree = "<group>"; };
 		B77CE25552A444E47D7C8099 /* Pods-Koboshi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Koboshi.release.xcconfig"; path = "Pods/Target Support Files/Pods-Koboshi/Pods-Koboshi.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -45,6 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81FD6D7B20183D61006CF79B /* SwiftOSC.framework in Frameworks */,
 				BCA3C7FB7410B3DBB7019DF1 /* Pods_Koboshi.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -72,6 +102,7 @@
 		81D590091FF37B7F008B4326 = {
 			isa = PBXGroup;
 			children = (
+				81FD6D7220183D1B006CF79B /* SwiftOSC.xcodeproj */,
 				81D590141FF37B7F008B4326 /* Koboshi */,
 				81D590131FF37B7F008B4326 /* Products */,
 				725CF3D5C4059C7D3A8CF6E7 /* Pods */,
@@ -90,6 +121,7 @@
 		81D590141FF37B7F008B4326 /* Koboshi */ = {
 			isa = PBXGroup;
 			children = (
+				81FD6D8020186C65006CF79B /* utils */,
 				81E3EAA71FFB1C78005039E3 /* operators */,
 				81D590151FF37B7F008B4326 /* AppDelegate.swift */,
 				81D590171FF37B7F008B4326 /* ViewController.swift */,
@@ -109,6 +141,9 @@
 				81E3EAA91FFB1C78005039E3 /* Operator.swift */,
 				81E3EAAC1FFB1CC6005039E3 /* ShellScriptOperator.swift */,
 				81E3EAAE1FFB1CD2005039E3 /* FileOperator.swift */,
+				81FD6D67201837CE006CF79B /* StringOperator.swift */,
+				81FD6D7C2018417A006CF79B /* OSCMessageOperator.swift */,
+				81FD6D7E201848C0006CF79B /* ArrayOperator.swift */,
 			);
 			path = operators;
 			sourceTree = "<group>";
@@ -118,8 +153,26 @@
 			children = (
 				81FD6D5F20181AD6006CF79B /* Trigger.swift */,
 				81FD6D6120181AED006CF79B /* IntervalTrigger.swift */,
+				81FD6D6520181D6A006CF79B /* OSCTrigger.swift */,
 			);
 			path = triggers;
+			sourceTree = "<group>";
+		};
+		81FD6D7320183D1B006CF79B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				81FD6D7820183D1B006CF79B /* SwiftOSC.framework */,
+				81FD6D7A20183D1B006CF79B /* SwiftOSCTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		81FD6D8020186C65006CF79B /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				81FD6D8120186C72006CF79B /* OSCDispatcher.swift */,
+			);
+			path = utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -172,12 +225,35 @@
 			mainGroup = 81D590091FF37B7F008B4326;
 			productRefGroup = 81D590131FF37B7F008B4326 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 81FD6D7320183D1B006CF79B /* Products */;
+					ProjectRef = 81FD6D7220183D1B006CF79B /* SwiftOSC.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				81D590111FF37B7F008B4326 /* Koboshi */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		81FD6D7820183D1B006CF79B /* SwiftOSC.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SwiftOSC.framework;
+			remoteRef = 81FD6D7720183D1B006CF79B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		81FD6D7A20183D1B006CF79B /* SwiftOSCTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = SwiftOSCTests.xctest;
+			remoteRef = 81FD6D7920183D1B006CF79B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		81D590101FF37B7F008B4326 /* Resources */ = {
@@ -244,10 +320,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81FD6D8220186C72006CF79B /* OSCDispatcher.swift in Sources */,
+				81FD6D7F201848C0006CF79B /* ArrayOperator.swift in Sources */,
 				81FD6D6220181AED006CF79B /* IntervalTrigger.swift in Sources */,
+				81FD6D7D2018417A006CF79B /* OSCMessageOperator.swift in Sources */,
 				81E3EAAF1FFB1CD2005039E3 /* FileOperator.swift in Sources */,
 				81E3EAAD1FFB1CC6005039E3 /* ShellScriptOperator.swift in Sources */,
 				81D590181FF37B7F008B4326 /* ViewController.swift in Sources */,
+				81FD6D6620181D6A006CF79B /* OSCTrigger.swift in Sources */,
+				81FD6D68201837CF006CF79B /* StringOperator.swift in Sources */,
 				81D590161FF37B7F008B4326 /* AppDelegate.swift in Sources */,
 				81FD6D6020181AD6006CF79B /* Trigger.swift in Sources */,
 				81E3EAAB1FFB1C78005039E3 /* Operator.swift in Sources */,
