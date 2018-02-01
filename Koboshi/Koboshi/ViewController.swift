@@ -22,7 +22,7 @@ class ViewController: NSViewController, NSTableViewDataSource {
 
 //		statements.append(StatementInfo(launchApplicationIfNotRunning: URL(fileURLWithPath: "/Applications/System Preferences.app")))
 //		var statement = StatementInfo(withTrigger:IntervalTrigger(withTimeInterval: 5))
-		var statement = StatementInfo(withTrigger:OSCTrigger(withComparator: Operator.OSCMessageCompare.compare(address: Operator.StringCompare.none, args: Operator.ArrayCompare.element(0,"stringArg"))))
+		var statement = StatementInfo(withTrigger:OSCTrigger(withComparator: Operator.OSCMessageCompare.any))
 		let outurl = URL(fileURLWithPath:"/Users/nariakiiwatani/Desktop/tmp.txt")
 		statement.statement.op = Operator.ifelse(
 			Operator.fileState(url: outurl, .exist)

@@ -10,16 +10,16 @@ import Foundation
 
 extension Operator {
 	enum StringCompare {
-		case none
+		case any
 		case equals(_:String)
 		case contains(_:String)
 		case regex(_:String)
 		func execute(_ str:String) -> Bool {
 			switch self {
-			case .none: return true
 			case let .equals(pattern): return str==pattern
 			case let .contains(pattern): return !(str.range(of: pattern)?.isEmpty ?? true)
 			case let .regex(pattern): return !(str.range(of: pattern, options: .regularExpression)?.isEmpty ?? true)
+			default: return true
 			}
 		}
 	}
@@ -36,7 +36,7 @@ extension Operator.StringCompare : JsonConvertibleOperator {
 		case "equals": self = .equals(args["pattern"].stringValue)
 		case "contains": self = .contains(args["pattern"].stringValue)
 		case "regex": self = .regex(args["pattern"].stringValue)
-		default: self = .none
+		default: self = .any
 		}
 	}
 	var type : String {
@@ -44,7 +44,7 @@ extension Operator.StringCompare : JsonConvertibleOperator {
 		case .equals: return "equals"
 		case .contains: return "contains"
 		case .regex: return "regex"
-		default: return "none"
+		default: return "any"
 		}
 	}
 	var args : Any {

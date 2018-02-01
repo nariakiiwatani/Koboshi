@@ -11,13 +11,13 @@ import AppKit
 
 extension Operator {
 	enum FileState {
-		case none
+		case any
 		case exist
 		func execute(_ url:URL) -> Bool {
 			switch self {
-			case .none: return true
 			case .exist:
 				return FileManager().fileExists(atPath: url.path)
+			default: return true
 			}
 		}
 	}
@@ -54,13 +54,13 @@ extension Operator.FileState : JsonConvertibleOperator {
 	init(withJSON json:JSON) {
 		switch json["type"] {
 		case "exist": self = .exist
-		default: self = .none
+		default: self = .any
 		}
 	}
 	var type : String {
 		switch self {
-		case .none: return "none"
 		case .exist: return "exist"
+		default: return "any"
 		}
 	}
 	var args : Any {

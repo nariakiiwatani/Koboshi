@@ -11,7 +11,7 @@ import AppKit
 
 extension Operator {
 	enum AppState {
-		case none
+		case any
 		case running
 		case notRunning
 		case active
@@ -20,7 +20,7 @@ extension Operator {
 				$0.bundleURL == url
 			}
 			switch self {
-			case .none: return true
+			case .any: return true
 			case .running:
 				return apps.isEmpty ? false :
 					apps.contains(where: { (app:NSRunningApplication) -> Bool in
@@ -74,15 +74,15 @@ extension Operator.AppState : JsonConvertibleOperator {
 		case "running": self = .running
 		case "notRunning": self = .notRunning
 		case "active": self = .active
-		default: self = .none
+		default: self = .any
 		}
 	}
 	var type : String {
 		switch self {
-		case .none: return "none"
 		case .running: return "running"
 		case .notRunning: return "notRunning"
 		case .active: return "active"
+		default: return "any"
 		}
 	}
 	var args : Any {

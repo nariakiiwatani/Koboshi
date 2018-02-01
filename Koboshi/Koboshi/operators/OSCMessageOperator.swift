@@ -11,12 +11,12 @@ import SwiftOSC
 
 extension Operator {
 	enum OSCMessageCompare {
-		case none
-		case compare(address:StringCompare, args:ArrayCompare)
+		case any
+		case compare(address:StringCompare?, args:ArrayCompare?)
 		func execute(_ message:OSCMessage) -> Bool {
 			switch self {
 			case let .compare(address, args):
-				return address.execute(message.address.string) && args.execute(message.arguments)
+				return (address?.execute(message.address.string) ?? true) && (args?.execute(message.arguments) ?? true)
 			default: return true
 			}
 		}
@@ -32,18 +32,18 @@ extension Operator.OSCMessageCompare : JsonConvertibleOperator {
 		let args = json["args"]
 		switch json["type"] {
 		case "compare": self = .compare(address:Operator.StringCompare(withJSON:args["address"]), args:Operator.ArrayCompare(withJSON:args["args"]))
-		default: self = .none
+		default: self = .any
 		}
 	}
 	var type : String {
 		switch self {
 		case .compare: return "compare"
-		default: return "none"
+		default: return "any"
 		}
 	}
 	var args : Any {
 		switch self {
-		case let .compare(address,args): return ["address":address.json, "args":args.json]
+		case let .compare(address,args): return ["address":address?.json ?? [], "args":args?.json ?? []]
 		default: return []
 		}
 	}

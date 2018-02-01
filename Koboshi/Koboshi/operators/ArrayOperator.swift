@@ -11,7 +11,7 @@ import Foundation
 extension Operator
 {
 	enum ArrayCompare {
-		case none
+		case any
 		case count(Int)
 		case element(Int,Any)
 		func execute(_ data:[Any?]) -> Bool {
@@ -40,14 +40,14 @@ extension Operator.ArrayCompare : JsonConvertibleOperator {
 		switch json["type"] {
 		case "count": self = .count(args["value"].intValue)
 		case "element": self = .element(args["index"].intValue, args["value"].object)
-		default: self = .none
+		default: self = .any
 		}
 	}
 	var type : String {
 		switch self {
 		case .count: return "count"
 		case .element: return "element"
-		default: return "none"
+		default: return "any"
 		}
 	}
 	var args : Any {
