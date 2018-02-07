@@ -10,33 +10,37 @@ import Cocoa
 import SwiftyJSON
 import SwiftOSC
 
-class ViewController: NSViewController, NSTableViewDataSource {
+class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
 
 	let client = OSCClient(address:"localhost", port:9000)
 	var oscServer = OSCServer(address:"", port:9000)
 	var oscDispatcher = OSCDispatcher()
-	var statements : [StatementInfo] = []
+	@IBOutlet weak var tableView : NSTableView!
+	var statements : [AppWatcher] = []
+	@IBOutlet weak var appEditor : AppWatcherEditor!
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		oscServer.delegate = oscDispatcher
 
 //		statements.append(StatementInfo(launchApplicationIfNotRunning: URL(fileURLWithPath: "/Applications/System Preferences.app")))
 //		var statement = StatementInfo(withTrigger:IntervalTrigger(withTimeInterval: 5))
-		var statement = StatementInfo(withTrigger:OSCTrigger(withComparator: Operator.OSCMessageCompare.any))
+		let info = AppWatcher(Statement(withTrigger:OSCTrigger(withComparator: Operator.OSCMessageCompare.any)))
 		let outurl = URL(fileURLWithPath:"/Users/nariakiiwatani/Desktop/tmp.txt")
-		statement.statement.op = Operator.ifelse(
+		info.statement.op = Operator.ifelse(
 			Operator.fileState(url: outurl, .exist)
 			,Operator.fileProc(url: outurl, .delete)
 			,Operator.fileProc(url: outurl, .create)
 			)
 //		statement.isRunning = true
-		let json = statement.json
+		statements.append(info)
+		let json = info.json
 		print(json)
-		statement = StatementInfo(withJSON:json)
-		print(statement.json)
-		oscDispatcher.add(statement.trigger as! OSCServerDelegateExt)
-		statement.isRunning = true
-		statements.append(statement)
+		let info2 = AppWatcher(withJSON:json)
+		print(info.json)
+//		oscDispatcher.add(info2.statement.trigger as! OSCServerDelegateExt)
+		info2.isRunning = true
+		info2.name = "jge"
+		statements.append(info2)
 		oscServer.start()
 	}
 
@@ -52,6 +56,9 @@ class ViewController: NSViewController, NSTableViewDataSource {
 	
 	func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
 		return statements[row]
+	}
+	public func tableViewSelectionDidChange(_ notification: Notification) {
+		appEditor.setReference(&statements[tableView.selectedRow])
 	}
 }
 

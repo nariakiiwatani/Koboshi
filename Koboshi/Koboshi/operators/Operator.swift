@@ -13,6 +13,9 @@ indirect enum Operator {
 	init() {
 		self = .none
 	}
+	init(_ bool:Bool) {
+		self = bool ? .always : .never
+	}
 	case none
 	case always
 	case never

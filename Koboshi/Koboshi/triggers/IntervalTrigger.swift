@@ -10,7 +10,7 @@ import Foundation
 
 class IntervalTrigger : Trigger
 {
-	var delegate: TriggerDelegate?
+	weak var delegate: TriggerDelegate?
 	
 	private var timer : Timer? {
 		willSet {

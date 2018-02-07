@@ -13,7 +13,7 @@ class OSCTrigger : Trigger, OSCServerDelegateExt
 {
 	var type: TriggerType { return .osc(messageComparator) }
 
-	var delegate: TriggerDelegate?
+	weak var delegate: TriggerDelegate?
 	private var messageComparator : Operator.OSCMessageCompare
 	
 	init(withComparator comparator:Operator.OSCMessageCompare) {

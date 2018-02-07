@@ -9,7 +9,7 @@
 import Foundation
 
 
-protocol TriggerDelegate
+protocol TriggerDelegate : class
 {
 	func execute() -> Bool
 	func executeAsync()
@@ -40,9 +40,8 @@ protocol Trigger : class
 {
 	var type : TriggerType { get }
 	var enable : Bool { get set }
-	var delegate : TriggerDelegate? { get set }
+	weak var delegate : TriggerDelegate? { get set }
 }
-
 
 import SwiftyJSON
 

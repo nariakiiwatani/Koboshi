@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		814F7FB72028348400FB6AD3 /* AppWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814F7FB62028348400FB6AD3 /* AppWatcher.swift */; };
+		81D1C436202ADB4F00959EE0 /* String+split.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D1C435202ADB4F00959EE0 /* String+split.swift */; };
 		81D590161FF37B7F008B4326 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D590151FF37B7F008B4326 /* AppDelegate.swift */; };
 		81D590181FF37B7F008B4326 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D590171FF37B7F008B4326 /* ViewController.swift */; };
 		81D5901A1FF37B7F008B4326 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 81D590191FF37B7F008B4326 /* Assets.xcassets */; };
@@ -47,6 +49,8 @@
 /* Begin PBXFileReference section */
 		17104F9CDACC2AEB30A30A89 /* Pods-Koboshi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Koboshi.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Koboshi/Pods-Koboshi.debug.xcconfig"; sourceTree = "<group>"; };
 		20FEC577EDF0E78ED55DD941 /* Pods_Koboshi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Koboshi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		814F7FB62028348400FB6AD3 /* AppWatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppWatcher.swift; sourceTree = "<group>"; };
+		81D1C435202ADB4F00959EE0 /* String+split.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+split.swift"; path = "Koboshi/utils/String+split.swift"; sourceTree = SOURCE_ROOT; };
 		81D590121FF37B7F008B4326 /* Koboshi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Koboshi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		81D590151FF37B7F008B4326 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		81D590171FF37B7F008B4326 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -99,6 +103,14 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		814F7FB32028347A00FB6AD3 /* convenients */ = {
+			isa = PBXGroup;
+			children = (
+				814F7FB62028348400FB6AD3 /* AppWatcher.swift */,
+			);
+			path = convenients;
+			sourceTree = "<group>";
+		};
 		81D590091FF37B7F008B4326 = {
 			isa = PBXGroup;
 			children = (
@@ -121,6 +133,7 @@
 		81D590141FF37B7F008B4326 /* Koboshi */ = {
 			isa = PBXGroup;
 			children = (
+				814F7FB32028347A00FB6AD3 /* convenients */,
 				81FD6D8020186C65006CF79B /* utils */,
 				81E3EAA71FFB1C78005039E3 /* operators */,
 				81D590151FF37B7F008B4326 /* AppDelegate.swift */,
@@ -170,6 +183,7 @@
 		81FD6D8020186C65006CF79B /* utils */ = {
 			isa = PBXGroup;
 			children = (
+				81D1C435202ADB4F00959EE0 /* String+split.swift */,
 				81FD6D8120186C72006CF79B /* OSCDispatcher.swift */,
 			);
 			path = utils;
@@ -325,11 +339,13 @@
 				81FD6D6220181AED006CF79B /* IntervalTrigger.swift in Sources */,
 				81FD6D7D2018417A006CF79B /* OSCMessageOperator.swift in Sources */,
 				81E3EAAF1FFB1CD2005039E3 /* FileOperator.swift in Sources */,
+				814F7FB72028348400FB6AD3 /* AppWatcher.swift in Sources */,
 				81E3EAAD1FFB1CC6005039E3 /* ShellScriptOperator.swift in Sources */,
 				81D590181FF37B7F008B4326 /* ViewController.swift in Sources */,
 				81FD6D6620181D6A006CF79B /* OSCTrigger.swift in Sources */,
 				81FD6D68201837CF006CF79B /* StringOperator.swift in Sources */,
 				81D590161FF37B7F008B4326 /* AppDelegate.swift in Sources */,
+				81D1C436202ADB4F00959EE0 /* String+split.swift in Sources */,
 				81FD6D6020181AD6006CF79B /* Trigger.swift in Sources */,
 				81E3EAAB1FFB1C78005039E3 /* Operator.swift in Sources */,
 				81E3EAA41FFAA224005039E3 /* Statement.swift in Sources */,

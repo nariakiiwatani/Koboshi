@@ -17,7 +17,7 @@ extension Operator {
 		case active
 		func execute(_ url:URL) -> Bool {
 			let apps = NSWorkspace.shared().runningApplications.filter{
-				$0.bundleURL == url
+				$0.bundleURL?.path == url.path
 			}
 			switch self {
 			case .any: return true
@@ -40,16 +40,19 @@ extension Operator {
 	enum AppProc {
 		case none
 		case launch
+		case launchWithOptions(NSWorkspaceLaunchOptions, [String])
 		case activate
 		case terminate
 		func execute(_ url:URL) -> Bool {
 			let apps = NSWorkspace.shared().runningApplications.filter{
-				$0.bundleURL == url
+				$0.bundleURL?.path == url.path
 			}
 			switch self {
 			case .none: return true
 			case .launch:
 				return (try? NSWorkspace().launchApplication(at: url, options: [], configuration: [:])) != nil
+			case let .launchWithOptions(options, args):
+				return (try? NSWorkspace().launchApplication(at: url, options: options, configuration: [NSWorkspaceLaunchConfigurationArguments:args])) != nil
 			case .terminate:
 				apps.forEach({ (app:NSRunningApplication) in
 					app.terminate()
@@ -91,8 +94,10 @@ extension Operator.AppState : JsonConvertibleOperator {
 }
 extension Operator.AppProc : JsonConvertibleOperator {
 	init(withJSON json:JSON) {
+		let args = json["args"]
 		switch json["type"] {
 		case "launch": self = .launch
+		case "launchWithOptions": self = .launchWithOptions(NSWorkspaceLaunchOptions(rawValue:args["flags"].uIntValue), args["args"].arrayValue.map{$0.stringValue})
 		case "activate": self = .activate
 		case "terminate": self = .terminate
 		default: self = .none
@@ -102,11 +107,18 @@ extension Operator.AppProc : JsonConvertibleOperator {
 		switch self {
 		case .none: return "none"
 		case .launch: return "launch"
+		case .launchWithOptions: return "launchWithOptions"
 		case .activate: return "activate"
 		case .terminate: return "terminate"
 		}
 	}
 	var args : Any {
-		return []
+		switch self {
+		case let .launchWithOptions(options, args): return [
+			"flags" : options.rawValue,
+			"args" : args
+			]
+		default: return []
+		}
 	}
 }
