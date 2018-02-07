@@ -49,7 +49,6 @@ class AppWatcherEditor : NSObject
 		}
 	}
 	dynamic var flags = OptionFlags()
-	dynamic var name = ""
 	dynamic var url = ""
 	dynamic var keepActive = true
 	dynamic var arguments = ""
@@ -58,17 +57,18 @@ class AppWatcherEditor : NSObject
 	weak var reference : AppWatcher?
 	func setReference(_ watcher : inout AppWatcher) {
 		reference = watcher
-		name = watcher.name
 		url = watcher.url
 		keepActive = watcher.keepActive
 		flags.options = watcher.options
 		trigger = watcher.trigger
 	}
+	func clearReference() {
+		reference = nil
+	}
 	@IBAction func apply(_ sender : Any?) {
 		guard let ref = reference else {
 			return
 		}
-		ref.name = name
 		ref.url = url
 		ref.keepActive = keepActive
 		ref.options = flags.options

@@ -34,9 +34,9 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 //		statement.isRunning = true
 		statements.append(info)
 		let json = info.json
-		print(json)
+//		print(json)
 		let info2 = AppWatcher(withJSON:json)
-		print(info.json)
+//		print(info.json)
 //		oscDispatcher.add(info2.statement.trigger as! OSCServerDelegateExt)
 		info2.isRunning = true
 		info2.name = "jge"
@@ -49,7 +49,32 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 		// Update the view, if already loaded.
 		}
 	}
+	
+	func newWatcher() {
+		statements.append(AppWatcher(Statement(withTrigger:IntervalTrigger(withTimeInterval: 1))))
+		tableView.reloadData()
+		tableView.selectRowIndexes([tableView.numberOfRows-1], byExtendingSelection: false)
+	}
+	func delWatcher() {
+		if tableView.selectedRow >= 0 {
+			let index = tableView.selectedRow
+			statements.remove(at: index)
+			tableView.reloadData()
+			tableView.selectRowIndexes([min(tableView.numberOfRows-1, index)], byExtendingSelection: false)
+		}
+	}
 
+	@IBAction func addremButton(_ sender: Any) {
+		guard let button = sender as? NSSegmentedControl else {
+			return
+		}
+		if button.isSelected(forSegment: 0) {
+			newWatcher()
+		}
+		if button.isSelected(forSegment: 1) {
+			delWatcher()
+		}
+	}
 	func numberOfRows(in tableView: NSTableView) -> Int {
 		return statements.count
 	}
@@ -58,7 +83,12 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 		return statements[row]
 	}
 	public func tableViewSelectionDidChange(_ notification: Notification) {
-		appEditor.setReference(&statements[tableView.selectedRow])
+		if tableView.selectedRow >= 0 {
+			appEditor.setReference(&statements[tableView.selectedRow])
+		}
+		else {
+			appEditor.clearReference()
+		}
 	}
 }
 

@@ -806,17 +806,17 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="151" height="40"/>
                                                 <subviews>
                                                     <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fbk-J1-ef6">
-                                                        <rect key="frame" x="29" y="8" width="104" height="24"/>
-                                                        <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="a5x-iH-2yX">
+                                                        <rect key="frame" x="62" y="8" width="71" height="24"/>
+                                                        <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="momentary" id="a5x-iH-2yX">
                                                             <font key="font" metaFont="system"/>
                                                             <segments>
-                                                                <segment width="32"/>
-                                                                <segment width="32" selected="YES" tag="1"/>
-                                                                <segment width="32">
-                                                                    <nil key="label"/>
-                                                                </segment>
+                                                                <segment label="+" width="32"/>
+                                                                <segment label="-" width="32" tag="1"/>
                                                             </segments>
                                                         </segmentedCell>
+                                                        <connections>
+                                                            <action selector="addremButton:" target="XfG-lQ-9wD" id="Yn8-ee-LvI"/>
+                                                        </connections>
                                                     </segmentedControl>
                                                 </subviews>
                                                 <constraints>
