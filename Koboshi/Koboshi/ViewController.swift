@@ -20,29 +20,33 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 	@IBOutlet weak var appEditor : AppWatcherEditor!
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		oscServer.delegate = oscDispatcher
-
-//		statements.append(StatementInfo(launchApplicationIfNotRunning: URL(fileURLWithPath: "/Applications/System Preferences.app")))
-//		var statement = StatementInfo(withTrigger:IntervalTrigger(withTimeInterval: 5))
-		let info = AppWatcher(Statement(withTrigger:OSCTrigger(withComparator: Operator.OSCMessageCompare.any)))
-		let outurl = URL(fileURLWithPath:"/Users/nariakiiwatani/Desktop/tmp.txt")
-		info.statement.op = Operator.ifelse(
-			Operator.fileState(url: outurl, .exist)
-			,Operator.fileProc(url: outurl, .delete)
-			,Operator.fileProc(url: outurl, .create)
-			)
-//		statement.isRunning = true
-		statements.append(info)
-		let json = info.json
-//		print(json)
-		let info2 = AppWatcher(withJSON:json)
-//		print(info.json)
-//		oscDispatcher.add(info2.statement.trigger as! OSCServerDelegateExt)
-		info2.isRunning = true
-		info2.name = "jge"
-		statements.append(info2)
-		oscServer.start()
+		
+//		oscServer.delegate = oscDispatcher
+//		oscServer.start()
+		if let data = UserDefaults.standard.value(forKey: "data") as? [Data] {
+			data.forEach{
+				if let json = try? JSON(data: $0) {
+					statements.append(AppWatcher(withJSON: json))
+				}
+			}
+		}
+		else {
+			newWatcher()
+		}
 	}
+	
+	override func viewDidAppear() {
+		super.viewDidAppear()
+		if !statements.isEmpty {
+			tableView.selectRowIndexes([0], byExtendingSelection: false)
+		}
+	}
+	
+	override func viewWillDisappear() {
+		super.viewWillDisappear()
+		UserDefaults.standard.setValue(statements.map{try? $0.json.rawData()}, forKey: "data")
+	}
+
 
 	override var representedObject: Any? {
 		didSet {

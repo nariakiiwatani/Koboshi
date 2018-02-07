@@ -33,7 +33,7 @@ import SwiftyJSON
 extension Statement {
 	convenience init(withJSON json:JSON) {
 		self.init(withTrigger:TriggerType(withJSON:json["trigger"]).toTrigger())
-		op = Operator(withJSON:json["statement"])
+		op = Operator(withJSON:json["operator"])
 	}
 	var json : JSON {
 		return [
