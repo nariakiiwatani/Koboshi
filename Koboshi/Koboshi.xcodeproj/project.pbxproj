@@ -10,6 +10,7 @@
 		814F7FB72028348400FB6AD3 /* AppWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814F7FB62028348400FB6AD3 /* AppWatcher.swift */; };
 		81D1C436202ADB4F00959EE0 /* String+split.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D1C435202ADB4F00959EE0 /* String+split.swift */; };
 		81D1C448202C0B3D00959EE0 /* SwiftOSC.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 81FD6D7820183D1B006CF79B /* SwiftOSC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		81D1C4DD202D5FD100959EE0 /* OutlineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D1C4DC202D5FD100959EE0 /* OutlineViewController.swift */; };
 		81D590161FF37B7F008B4326 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D590151FF37B7F008B4326 /* AppDelegate.swift */; };
 		81D590181FF37B7F008B4326 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D590171FF37B7F008B4326 /* ViewController.swift */; };
 		81D5901A1FF37B7F008B4326 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 81D590191FF37B7F008B4326 /* Assets.xcassets */; };
@@ -65,6 +66,7 @@
 		20FEC577EDF0E78ED55DD941 /* Pods_Koboshi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Koboshi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		814F7FB62028348400FB6AD3 /* AppWatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppWatcher.swift; sourceTree = "<group>"; };
 		81D1C435202ADB4F00959EE0 /* String+split.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+split.swift"; path = "Koboshi/utils/String+split.swift"; sourceTree = SOURCE_ROOT; };
+		81D1C4DC202D5FD100959EE0 /* OutlineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutlineViewController.swift; sourceTree = "<group>"; };
 		81D590121FF37B7F008B4326 /* Koboshi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Koboshi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		81D590151FF37B7F008B4326 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		81D590171FF37B7F008B4326 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 				81D5901E1FF37B7F008B4326 /* Info.plist */,
 				81E3EAA31FFAA224005039E3 /* Statement.swift */,
 				81FD6D5E20181AD6006CF79B /* triggers */,
+				81D1C4DC202D5FD100959EE0 /* OutlineViewController.swift */,
 			);
 			path = Koboshi;
 			sourceTree = "<group>";
@@ -364,6 +367,7 @@
 				81D1C436202ADB4F00959EE0 /* String+split.swift in Sources */,
 				81FD6D6020181AD6006CF79B /* Trigger.swift in Sources */,
 				81E3EAAB1FFB1C78005039E3 /* Operator.swift in Sources */,
+				81D1C4DD202D5FD100959EE0 /* OutlineViewController.swift in Sources */,
 				81E3EAA41FFAA224005039E3 /* Statement.swift in Sources */,
 				81E3EAAA1FFB1C78005039E3 /* AppOperator.swift in Sources */,
 			);
