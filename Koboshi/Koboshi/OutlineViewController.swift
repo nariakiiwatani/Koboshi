@@ -14,11 +14,10 @@ extension Operator {
 		case .always,
 		     .never:
 			return 0
-		case .applicationState:
-			return 1
 		case .ifthen,
 		     .ifnot,
-		     .and:
+		     .and,
+		     .applicationState:
 			return 2
 		case .ifelse:
 			return 3
@@ -63,116 +62,88 @@ import SwiftyJSON
 class OutlineViewController : NSViewController, NSOutlineViewDataSource, NSOutlineViewDelegate
 {
 	@IBOutlet weak var outlineView: NSOutlineView!
-	var initialOperator : Operator!
+	var jsonSrc: JSON!
 	@IBAction func applyChanges(_ sender: Any) {
 	}
 	
 	@IBAction func revertChanges(_ sender: Any) {
-		initialOperator =
+		outlineView.reloadItem(nil, reloadChildren:true)
+	}
+	
+	override public func viewDidLoad() {
+		super.viewDidLoad()
+		jsonSrc = ["root":
 			Operator.ifelse(
 				Operator.and(
 					Operator.applicationState(url:URL(fileURLWithPath: "/hogehoge.app"), Operator.AppState.running),
 					Operator.never),
 				Operator.ifthen(Operator.always, Operator.never),
-				Operator.ifnot(Operator.always, Operator.never)
-		)
-		outlineView.reloadItem(self)
+				Operator.ifthen(Operator.always, Operator.never)
+		).json]
 	}
-	
-	override public func viewDidLoad() {
-		super.viewDidLoad()
-		revertChanges(self);
+	public func outlineView(_ outlineView: NSOutlineView, shouldEdit tableColumn: NSTableColumn?, item: Any) -> Bool {
+		return true
 	}
+
+	public func outlineView(_ outlineView: NSOutlineView, setObjectValue object: Any?, for tableColumn: NSTableColumn?, byItem item: Any?) {
+		let item = item as! [JSONSubscriptType]
+		var json : JSON = jsonSrc
+		json[item] = JSON(object)
+		jsonSrc = ["root": Operator(withJSON:json["root"]).json]
+		outlineView.reloadItem(nil, reloadChildren:true)
+	}
+
 	public func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
-		switch item {
-		case is (Any, JSON):
-			let json = (item as! (Any, JSON)).1
-			switch json.type {
-			case .dictionary, .array: return json.count
-			default: return 0
-			}
-		case is Operator: return (item as! Operator).numberOfChildren()
-		case nil: return 1
+		if(item == nil) {
+			return 1
+		}
+		let item = item as! [JSONSubscriptType]
+		let json = jsonSrc[item]
+		switch json.type {
+		case .dictionary, .array: return json.count
 		default: return 0
 		}
 	}
 	
 	public func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
-		switch item {
-		case is (Any, JSON):
-			let json = (item as! (Any, JSON)).1
-			switch json.type {
-			case .dictionary: return json[json.index(json.startIndex, offsetBy: index)]
-			case .array: return (index, json[index])
-			default: return []
-			}
-		case is JSON:
-			let json = item as! JSON
-			switch json.type {
-			case .dictionary: return json[json.index(json.startIndex, offsetBy: index)]
-			case .array: return (index, json[index])
-			default: return []
-			}
-		case is Operator: return (item as! Operator).getArg(at: index)
-		//case nil: return initialOperator
-		case nil: return ("root", initialOperator.json)
-		default: return Operator.none
+		if(item == nil) {
+			return ["root" as JSONSubscriptType]
 		}
+		var item = item as! [JSONSubscriptType]
+		let json = jsonSrc[item]
+		switch json.type {
+		case .dictionary: item.append(json[json.index(json.startIndex, offsetBy: index)].0)
+		case .array: item.append(index as JSONSubscriptType)
+		default: assert(false, "something is wrong")
+		}
+		return item
 	}
 	
 	public func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
-		switch item {
-		case is (Any, JSON):
-			let json = (item as! (Any, JSON)).1
-			switch json.type {
-			case .dictionary, .array: return json.count > 0
-			default: return false
-			}
-		case is Operator: return (item as! Operator).numberOfChildren() > 0
-		case nil: return true
+		let item = item as! [JSONSubscriptType]
+		let json = jsonSrc[item]
+		switch json.type {
+		case .dictionary, .array: return json.count > 0
 		default: return false
 		}
 	}
-	public func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
-		switch item {
-		case is (Any, JSON):
-			let (i,j) = item as! (Any, JSON)
-			switch tableColumn!.identifier {
-			case "TableKey":
-				return NSTextField(labelWithString: String(describing: i))
-			case "TableValue":
-				switch j.type {
-				case .array: return NSTextField(labelWithString: "(array)")
-				case .dictionary: return NSTextField(labelWithString: "(object)")
-				case .bool: return NSTextField(string: j.boolValue ? "true" : "false")
-				case .null: return NSTextField(labelWithString: "null")
-				case .number: return NSTextField(string: String(describing: j.numberValue))
-				case .string: return NSTextField(string: j.stringValue)
-				default: return nil
-				}
-			default: return nil
-			}
-		case is Operator:
-			switch tableColumn!.identifier {
-			case "TableKey":
-				return NSTextField(labelWithString: (item as! Operator).type)
-			case "TableValue": return nil
-			default: return nil
-			}
-		case is URL:
-			switch tableColumn!.identifier {
-			case "TableKey":
-				return NSTextField(labelWithString: "URL")
-			case "TableValue":
-				return NSTextField(string: (item as! URL).path)
-			default: return nil
-			}
-		case is Operator.AppState:
-			switch tableColumn!.identifier {
-			case "TableKey":
-				return NSTextField(labelWithString: "appState")
-			case "TableValue":
-				return NSTextField(labelWithString: (item as! Operator.AppState).type)
+	public func outlineView(_ outlineView: NSOutlineView, objectValueFor tableColumn: NSTableColumn?, byItem item: Any?) -> Any? {
+		if(item == nil) {
+			return nil
+		}
+		let item = item as! [JSONSubscriptType]
+		let json = jsonSrc[item]
+		switch tableColumn!.identifier {
+		case "TableKey":
+			return String(describing: item.last!)
+		case "TableValue":
+			switch json.type {
+			case .array: return "(array)"
+			case .dictionary: return "(object)"
+			case .bool: return json.boolValue ? "true" : "false"
+			case .null: return "null"
+			case .number: return String(describing: json.numberValue)
+			case .string: return json.stringValue
 			default: return nil
 			}
 		default: return nil
