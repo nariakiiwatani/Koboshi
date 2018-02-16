@@ -72,30 +72,33 @@ class OutlineViewController : NSViewController, NSOutlineViewDataSource, NSOutli
 	
 	override public func viewDidLoad() {
 		super.viewDidLoad()
-		jsonSrc = ["root":
-			Operator.ifelse(
-				Operator.and(
-					Operator.applicationState(url:URL(fileURLWithPath: "/hogehoge.app"), Operator.AppState.running),
-					Operator.never),
-				Operator.ifthen(Operator.always, Operator.never),
-				Operator.ifthen(Operator.always, Operator.never)
-		).json]
+		jsonSrc = ["trigger": IntervalTrigger(withTimeInterval: 1).type.json,
+		           "operator": Operator.ifelse(
+					Operator.and(
+						Operator.applicationState(url:URL(fileURLWithPath: "/hogehoge.app"), Operator.AppState.running),
+						Operator.never),
+					Operator.ifthen(Operator.always, Operator.never),
+					Operator.ifthen(Operator.always, Operator.never)).json
+		]
 	}
 	public func outlineView(_ outlineView: NSOutlineView, shouldEdit tableColumn: NSTableColumn?, item: Any) -> Bool {
 		return true
 	}
-
+	
 	public func outlineView(_ outlineView: NSOutlineView, setObjectValue object: Any?, for tableColumn: NSTableColumn?, byItem item: Any?) {
 		let item = item as! [JSONSubscriptType]
 		var json : JSON = jsonSrc
 		json[item] = JSON(object)
-		jsonSrc = ["root": Operator(withJSON:json["root"]).json]
+		jsonSrc = [
+			"trigger" : TriggerType(withJSON: json["trigger"]).json,
+			"operator": Operator(withJSON: json["operator"]).json
+		]
 		outlineView.reloadItem(nil, reloadChildren:true)
 	}
-
+	
 	public func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
 		if(item == nil) {
-			return 1
+			return 2
 		}
 		let item = item as! [JSONSubscriptType]
 		let json = jsonSrc[item]
@@ -107,7 +110,7 @@ class OutlineViewController : NSViewController, NSOutlineViewDataSource, NSOutli
 	
 	public func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
 		if(item == nil) {
-			return ["root" as JSONSubscriptType]
+			return [["trigger", "operator"][index] as JSONSubscriptType]
 		}
 		var item = item as! [JSONSubscriptType]
 		let json = jsonSrc[item]
