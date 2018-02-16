@@ -108,17 +108,17 @@ extension Operator : JsonConvertibleOperator {
 		case .anyway: return "anyway"
 		case .ignore: return "ignore"
 			
-		case let .stringCompare(_,comparator): return "stringCompare."+comparator.type
+		case .stringCompare: return "stringCompare"
 
-		case let .arrayCompare(_,comparator): return "arrayCompare."+comparator.type
+		case .arrayCompare: return "arrayCompare"
 
-		case let .applicationState(_,state): return "appState."+state.type
-		case let .applicationProc(_,proc): return "appProc."+proc.type
+		case .applicationState: return "appState"
+		case .applicationProc: return "appProc"
 
-		case let .fileState(_,state): return "fileState."+state.type
-		case let .fileProc(_,proc): return "fileProc."+proc.type
+		case .fileState: return "fileState"
+		case .fileProc: return "fileProc"
 
-		case let .shellScriptExec(_,exec): return "shellScriptExec."+exec.type
+		case .shellScriptExec: return "shellScriptExec"
 		}
 	}
 	var args : Any {
@@ -136,17 +136,17 @@ extension Operator : JsonConvertibleOperator {
 		case let .anyway(o),
 		     let .ignore(o): return o.json
 
-		case let .stringCompare(str, comparator): return ["string":str, "args":comparator.args]
+		case let .stringCompare(str, comparator): return ["string":str, "args":comparator.json]
 
-		case let .arrayCompare(arr, comparator): return ["array":arr, "args":comparator.args]
+		case let .arrayCompare(arr, comparator): return ["array":arr, "args":comparator.json]
 
-		case let .applicationState(url, state): return ["url":url.path, "args":state.args]
-		case let .applicationProc(url, proc): return ["url":url.path, "args":proc.args]
+		case let .applicationState(url, state): return ["url":url.path, "args":state.json]
+		case let .applicationProc(url, proc): return ["url":url.path, "args":proc.json]
 			
-		case let .fileState(url, state): return ["url":url.path, "args":state.args]
-		case let .fileProc(url, proc): return ["url":url.path, "args":proc.args]
+		case let .fileState(url, state): return ["url":url.path, "args":state.json]
+		case let .fileProc(url, proc): return ["url":url.path, "args":proc.json]
 		
-		case let .shellScriptExec(program,exec): return ["program":program.path, "args":exec.args]
+		case let .shellScriptExec(program,exec): return ["program":program.path, "args":exec.json]
 		}
 	}
 	init(withJSON json:JSON) {
@@ -164,48 +164,13 @@ extension Operator : JsonConvertibleOperator {
 		case "ifelse":	self = .ifelse(Operator(withJSON: args[0]), Operator(withJSON: args[1]), Operator(withJSON: args[2]))
 		case "anyway":	self = .anyway(Operator(withJSON: args))
 		case "ignore":	self = .ignore(Operator(withJSON: args))
-		case let type where type.stringValue.hasPrefix("stringCompare."):
-			let childJson: JSON = [
-				"type" : type.stringValue.components(separatedBy: ".")[1],
-				"args" : args["args"]
-			]
-			self = .stringCompare(args["string"].stringValue, Operator.StringCompare(withJSON: childJson))
-		case let type where type.stringValue.hasPrefix("arrayCompare."):
-			let childJson: JSON = [
-				"type" : type.stringValue.components(separatedBy: ".")[1],
-				"args" : args["args"]
-			]
-			self = .arrayCompare(args["array"].arrayValue, Operator.ArrayCompare(withJSON: childJson))
-		case let type where type.stringValue.hasPrefix("appState."):
-			let childJson: JSON = [
-				"type" : type.stringValue.components(separatedBy: ".")[1],
-				"args" : args["args"]
-			]
-			self = .applicationState(url:URL(fileURLWithPath: args["url"].stringValue), Operator.AppState(withJSON: childJson))
-		case let type where type.stringValue.hasPrefix("appProc."):
-			let childJson: JSON = [
-				"type" : type.stringValue.components(separatedBy: ".")[1],
-				"args" : args["args"]
-			]
-			self = .applicationProc(url:URL(fileURLWithPath: args["url"].stringValue), Operator.AppProc(withJSON: childJson))
-		case let type where type.stringValue.hasPrefix("fileState."):
-			let childJson: JSON = [
-				"type" : type.stringValue.components(separatedBy: ".")[1],
-				"args" : args["args"]
-			]
-			self = .fileState(url:URL(fileURLWithPath: args["url"].stringValue), Operator.FileState(withJSON: childJson))
-		case let type where type.stringValue.hasPrefix("fileProc."):
-			let childJson: JSON = [
-				"type" : type.stringValue.components(separatedBy: ".")[1],
-				"args" : args["args"]
-			]
-			self = .fileProc(url:URL(fileURLWithPath: args["url"].stringValue), Operator.FileProc(withJSON: childJson))
-		case let type where type.stringValue.hasPrefix("shellScriptExec."):
-			let childJson: JSON = [
-				"type" : type.stringValue.components(separatedBy: ".")[1],
-				"args" : args["args"]
-			]
-			self = .shellScriptExec(program:URL(fileURLWithPath: args["program"].stringValue), Operator.ShellScriptExec(withJSON: childJson))
+		case "stringCompare":	self = .stringCompare(args["string"].stringValue, Operator.StringCompare(withJSON: args["args"]))
+		case "arrayCompare":	self = .arrayCompare(args["array"].arrayValue, Operator.ArrayCompare(withJSON: args["args"]))
+		case "appState":		self = .applicationState(url:URL(fileURLWithPath: args["url"].stringValue), Operator.AppState(withJSON: args["args"]))
+		case "appProc":			self = .applicationProc(url:URL(fileURLWithPath: args["url"].stringValue), Operator.AppProc(withJSON: args["args"]))
+		case "fileState":		self = .fileState(url:URL(fileURLWithPath: args["url"].stringValue), Operator.FileState(withJSON: args["args"]))
+		case "fileProc":		self = .fileProc(url:URL(fileURLWithPath: args["url"].stringValue), Operator.FileProc(withJSON: args["args"]))
+		case "shellScriptExec":	self = .shellScriptExec(program:URL(fileURLWithPath: args["program"].stringValue), Operator.ShellScriptExec(withJSON: args["args"]))
 		default: self = .none
 		}
 	}
