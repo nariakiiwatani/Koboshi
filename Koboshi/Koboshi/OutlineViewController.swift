@@ -62,8 +62,26 @@ extension Operator {
 import SwiftyJSON
 class OutlineViewController : NSViewController, NSOutlineViewDataSource, NSOutlineViewDelegate
 {
-	override func viewDidLoad() {
+	@IBOutlet weak var outlineView: NSOutlineView!
+	var initialOperator : Operator!
+	@IBAction func applyChanges(_ sender: Any) {
+	}
+	
+	@IBAction func revertChanges(_ sender: Any) {
+		initialOperator =
+			Operator.ifelse(
+				Operator.and(
+					Operator.applicationState(url:URL(fileURLWithPath: "/hogehoge.app"), Operator.AppState.running),
+					Operator.never),
+				Operator.ifthen(Operator.always, Operator.never),
+				Operator.ifnot(Operator.always, Operator.never)
+		)
+		outlineView.reloadItem(self)
+	}
+	
+	override public func viewDidLoad() {
 		super.viewDidLoad()
+		revertChanges(self);
 	}
 	public func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
 		switch item {
@@ -96,11 +114,8 @@ class OutlineViewController : NSViewController, NSOutlineViewDataSource, NSOutli
 			default: return []
 			}
 		case is Operator: return (item as! Operator).getArg(at: index)
-		case nil: return Operator.ifelse(Operator.and(Operator.applicationState(url:URL(fileURLWithPath: "/hogehoge.app"), Operator.AppState.running), Operator.never),
-		                                 Operator.ifthen(Operator.always, Operator.never),
-		                                 Operator.ifnot(Operator.always, Operator.never)
-			)
-//		case nil: return ("root", Operator.and(Operator.always, Operator.never).json)
+		//case nil: return initialOperator
+		case nil: return ("root", initialOperator.json)
 		default: return Operator.none
 		}
 	}
@@ -123,17 +138,17 @@ class OutlineViewController : NSViewController, NSOutlineViewDataSource, NSOutli
 		case is (Any, JSON):
 			let (i,j) = item as! (Any, JSON)
 			switch tableColumn!.identifier {
-				case "TableKey":
-					return NSTextField(labelWithString: String(describing: i))
-				case "TableValue":
-					switch j.type {
-					case .array: return NSTextField(labelWithString: "array")
-					case .dictionary: return NSTextField(labelWithString: "object")
-					case .bool: return NSTextField(labelWithString: j.boolValue ? "true" : "false")
-					case .null: return NSTextField(labelWithString: "null")
-					case .number: return NSTextField(labelWithString: String(describing: j.numberValue))
-					case .string: return NSTextField(labelWithString: j.stringValue)
-					default: return nil
+			case "TableKey":
+				return NSTextField(labelWithString: String(describing: i))
+			case "TableValue":
+				switch j.type {
+				case .array: return NSTextField(labelWithString: "(array)")
+				case .dictionary: return NSTextField(labelWithString: "(object)")
+				case .bool: return NSTextField(string: j.boolValue ? "true" : "false")
+				case .null: return NSTextField(labelWithString: "null")
+				case .number: return NSTextField(string: String(describing: j.numberValue))
+				case .string: return NSTextField(string: j.stringValue)
+				default: return nil
 				}
 			default: return nil
 			}
