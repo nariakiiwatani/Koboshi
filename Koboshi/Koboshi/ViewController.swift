@@ -16,8 +16,8 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 	var oscServer = OSCServer(address:"", port:9000)
 	var oscDispatcher = OSCDispatcher()
 	@IBOutlet weak var tableView : NSTableView!
-	var statements : [AppWatcher] = []
-	@IBOutlet weak var appEditor : AppWatcherEditor!
+	@IBOutlet weak var editor : StatementEditor!
+	var statements : [Statement] = []
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -26,12 +26,12 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 		if let data = UserDefaults.standard.value(forKey: "data") as? [Data] {
 			data.forEach{
 				if let json = try? JSON(data: $0) {
-					statements.append(AppWatcher(withJSON: json))
+					statements.append(Statement(withJSON: json))
 				}
 			}
 		}
 		else {
-			newWatcher()
+			newStatement()
 		}
 	}
 	
@@ -54,12 +54,12 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 		}
 	}
 	
-	func newWatcher() {
-		statements.append(AppWatcher(Statement(withTrigger:IntervalTrigger(withTimeInterval: 1))))
+	func newStatement() {
+		statements.append(Statement(withTrigger:IntervalTrigger(withTimeInterval: 1)))
 		tableView.reloadData()
 		tableView.selectRowIndexes([tableView.numberOfRows-1], byExtendingSelection: false)
 	}
-	func delWatcher() {
+	func delStatement() {
 		if tableView.selectedRow >= 0 {
 			let index = tableView.selectedRow
 			statements.remove(at: index)
@@ -73,10 +73,10 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 			return
 		}
 		if button.isSelected(forSegment: 0) {
-			newWatcher()
+			newStatement()
 		}
 		if button.isSelected(forSegment: 1) {
-			delWatcher()
+			delStatement()
 		}
 	}
 	func numberOfRows(in tableView: NSTableView) -> Int {
@@ -88,10 +88,10 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 	}
 	public func tableViewSelectionDidChange(_ notification: Notification) {
 		if tableView.selectedRow >= 0 {
-			appEditor.setReference(&statements[tableView.selectedRow])
+			editor.json = statements[tableView.selectedRow].json
 		}
 		else {
-			appEditor.clearReference()
+			editor.json = JSON({})
 		}
 	}
 }
