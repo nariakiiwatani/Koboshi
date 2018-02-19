@@ -1298,7 +1298,7 @@
                                                     <rect key="frame" x="1" y="0.0" width="353" height="599"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
-                                                        <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" headerView="FXg-Df-jpj" indentationPerLevel="16" outlineTableColumn="5tf-3V-66h" id="72f-rY-Rui">
+                                                        <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="FXg-Df-jpj" viewBased="YES" indentationPerLevel="16" outlineTableColumn="5tf-3V-66h" id="72f-rY-Rui">
                                                             <rect key="frame" x="0.0" y="0.0" width="353" height="576"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <size key="intercellSpacing" width="3" height="2"/>

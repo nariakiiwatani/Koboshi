@@ -27,14 +27,14 @@ class StatementEditor : NSObject, NSOutlineViewDataSource, NSOutlineViewDelegate
 		return true
 	}
 	
-	public func outlineView(_ outlineView: NSOutlineView, setObjectValue object: Any?, for tableColumn: NSTableColumn?, byItem item: Any?) {
-		guard let object = object else {
-			return
-		}
-		let item = item as! [JSONSubscriptType]
+	@IBAction func didEditValue(_ sender: Any) {
+		let row = outlineView.row(for: sender as! NSView)
+		let item = outlineView.item(atRow: row) as! [JSONSubscriptType]
 		var json : JSON = jsonSrc
-		json[item] = JSON(object)
+		// TODO: 編集結果をjsonに反映
+//		json[item] = JSON(object)
 		jsonSrc = [
+			"name" : json["name"],
 			"trigger" : TriggerType(withJSON: json["trigger"]).json,
 			"operator": Operator(withJSON: json["operator"]).json
 		]
@@ -75,6 +75,50 @@ class StatementEditor : NSObject, NSOutlineViewDataSource, NSOutlineViewDelegate
 		default: return false
 		}
 	}
+	public func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
+		let ret = { (item, tableColumn) -> NSView? in
+			let item = item as! [JSONSubscriptType]
+			let json = jsonSrc[item]
+			switch tableColumn!.identifier {
+			case "TableKey":
+				return NSTextField(labelWithString: item.last as! String)
+			case "TableValue":
+				switch json.type {
+				case .array: return NSTextField(labelWithString: "(array)")
+				case .dictionary: return NSTextField(labelWithString: "(object)")
+				case .bool: return NSTextField(string: json.boolValue ? "true" : "false")
+				case .null: return NSTextField(string: "null")
+				case .number: return NSTextField(string: String(describing: json.numberValue))
+				case .string: return NSTextField(string: json.stringValue)
+				default: return nil
+				}
+			default: return nil
+			}
+		}(item, tableColumn)
+		(ret as? NSControl)?.target = self
+		(ret as? NSControl)?.action = #selector(StatementEditor.didEditValue(_:))
+		return ret
+	}
+	
+	
+	/*
+	// MARK: Methods for Cell-Based OutlineView
+	
+	public func outlineView(_ outlineView: NSOutlineView, setObjectValue object: Any?, for tableColumn: NSTableColumn?, byItem item: Any?) {
+		guard let object = object else {
+			return
+		}
+		let item = item as! [JSONSubscriptType]
+		var json : JSON = jsonSrc
+		json[item] = JSON(object)
+		jsonSrc = [
+			"trigger" : TriggerType(withJSON: json["trigger"]).json,
+			"operator": Operator(withJSON: json["operator"]).json
+		]
+		outlineView.reloadItem(nil, reloadChildren:true)
+	}
+	
+
 	public func outlineView(_ outlineView: NSOutlineView, objectValueFor tableColumn: NSTableColumn?, byItem item: Any?) -> Any? {
 		if(item == nil) {
 			return nil
@@ -97,4 +141,5 @@ class StatementEditor : NSObject, NSOutlineViewDataSource, NSOutlineViewDelegate
 		default: return nil
 		}
 	}
+	*/
 }
