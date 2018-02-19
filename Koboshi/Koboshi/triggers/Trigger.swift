@@ -45,25 +45,7 @@ protocol Trigger : class
 
 import SwiftyJSON
 
-protocol JsonConvertibleTrigger
-{
-	init(withJSON json:JSON)
-	var type : String{get}
-	var args : Any{get}
-	var json : JSON{get}
-}
-
-extension JsonConvertibleTrigger
-{
-	var json : JSON {
-		return [
-			"type" : JSON(type),
-			"args" : JSON(args)
-		]
-	}
-}
-
-extension TriggerType : JsonConvertibleTrigger
+extension TriggerType : JsonConvertibleType
 {
 	init(withJSON json: JSON) {
 		let type = json["type"].stringValue

@@ -12,12 +12,9 @@ import Foundation
 class Statement : NSObject, TriggerDelegate
 {
 	var name = "New Item"
-	init(withTrigger t:Trigger!) {
-		super.init()
-		trigger = t
-		trigger.delegate = self
+	var trigger : Trigger! {
+		didSet { trigger.delegate = self }
 	}
-	var trigger : Trigger!
 	var isRunning : Bool {
 		set { trigger.enable = newValue }
 		get { return trigger.enable }
@@ -34,8 +31,9 @@ import SwiftyJSON
 
 extension Statement {
 	convenience init(withJSON json:JSON) {
-		self.init(withTrigger:TriggerType(withJSON:json["trigger"]).toTrigger())
+		self.init()
 		name = json["name"].stringValue
+		trigger = TriggerType(withJSON:json["trigger"]).toTrigger()
 		op = Operator(withJSON:json["operator"])
 	}
 	var json : JSON {

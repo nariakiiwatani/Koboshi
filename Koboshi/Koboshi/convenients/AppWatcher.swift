@@ -76,7 +76,8 @@ class AppWatcherEditor : NSObject
 		let appurl = URL(fileURLWithPath: url)
 		let running = ref.isRunning
 		let args = arguments.split(withDelimiters: [" "])
-		ref.statement = Statement(withTrigger: trigger.toTrigger())
+		ref.statement = Statement()
+		ref.statement.trigger = trigger.toTrigger()
 		ref.statement.op = 
 			Operator.and(
 				Operator.ifthen(Operator.applicationState(url: appurl, Operator.AppState.notRunning),

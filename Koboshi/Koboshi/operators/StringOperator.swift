@@ -29,7 +29,7 @@ extension Operator {
 // MARK: - Json
 import SwiftyJSON
 
-extension Operator.StringCompare : JsonConvertibleOperator {
+extension Operator.StringCompare : JsonConvertibleType {
 	init(withJSON json:JSON) {
 		let args = json["args"]
 		switch json["type"] {

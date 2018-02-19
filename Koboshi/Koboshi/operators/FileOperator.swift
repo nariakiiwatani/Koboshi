@@ -50,7 +50,7 @@ extension Operator {
 // MARK: - Json
 import SwiftyJSON
 
-extension Operator.FileState : JsonConvertibleOperator {
+extension Operator.FileState : JsonConvertibleType {
 	init(withJSON json:JSON) {
 		switch json["type"] {
 		case "exist": self = .exist
@@ -68,7 +68,7 @@ extension Operator.FileState : JsonConvertibleOperator {
 	}
 }
 
-extension Operator.FileProc : JsonConvertibleOperator {
+extension Operator.FileProc : JsonConvertibleType {
 	init(withJSON json:JSON) {
 		switch json["type"] {
 		case "open": self = .open(withApp:URL(fileURLWithPath:json["args"]["withApp"].stringValue))

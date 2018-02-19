@@ -27,7 +27,7 @@ extension Operator {
 // MARK: - Json
 import SwiftyJSON
 
-extension Operator.OSCMessageCompare : JsonConvertibleOperator {
+extension Operator.OSCMessageCompare : JsonConvertibleType {
 	init(withJSON json:JSON) {
 		let args = json["args"]
 		switch json["type"] {

@@ -50,7 +50,7 @@ extension Operator {
 //MARK: - Json
 import SwiftyJSON
 
-extension Operator.ShellScriptExec : JsonConvertibleOperator {
+extension Operator.ShellScriptExec : JsonConvertibleType {
 	init(withJSON json:JSON) {
 		let args = json["args"]
 		switch json["type"] {

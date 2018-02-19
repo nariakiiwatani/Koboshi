@@ -55,7 +55,9 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 	}
 	
 	func newStatement() {
-		statements.append(Statement(withTrigger:IntervalTrigger(withTimeInterval: 1)))
+		let s = Statement()
+		s.trigger = IntervalTrigger(withTimeInterval: 1)
+		statements.append(s)
 		tableView.reloadData()
 		tableView.selectRowIndexes([tableView.numberOfRows-1], byExtendingSelection: false)
 	}

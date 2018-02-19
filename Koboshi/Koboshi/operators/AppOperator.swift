@@ -71,7 +71,7 @@ extension Operator {
 //MARK: - Json
 import SwiftyJSON
 
-extension Operator.AppState : JsonConvertibleOperator {
+extension Operator.AppState : JsonConvertibleType {
 	init(withJSON json:JSON) {
 		switch json["type"] {
 		case "running": self = .running
@@ -92,7 +92,7 @@ extension Operator.AppState : JsonConvertibleOperator {
 		return []
 	}
 }
-extension Operator.AppProc : JsonConvertibleOperator {
+extension Operator.AppProc : JsonConvertibleType {
 	init(withJSON json:JSON) {
 		let args = json["args"]
 		switch json["type"] {

@@ -77,22 +77,7 @@ indirect enum Operator {
 //MARK: - Json
 import SwiftyJSON
 
-protocol JsonConvertibleOperator {
-	init(withJSON json:JSON)
-	var type : String{get}
-	var args : Any{get}
-	var json : JSON{get}
-}
-
-extension JsonConvertibleOperator {
-	var json : JSON {
-		return [
-			"type" : JSON(type),
-			"args" : JSON(args)
-		]
-	}
-}
-extension Operator : JsonConvertibleOperator {
+extension Operator : JsonConvertibleType {
 	var type : String {
 		switch self {
 		case .none: return "none"
