@@ -28,6 +28,9 @@ class StatementEditor : NSObject, NSOutlineViewDataSource, NSOutlineViewDelegate
 	}
 	
 	public func outlineView(_ outlineView: NSOutlineView, setObjectValue object: Any?, for tableColumn: NSTableColumn?, byItem item: Any?) {
+		guard let object = object else {
+			return
+		}
 		let item = item as! [JSONSubscriptType]
 		var json : JSON = jsonSrc
 		json[item] = JSON(object)
