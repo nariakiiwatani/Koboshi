@@ -9,7 +9,6 @@
 import Foundation
 import SwiftOSC
 
-extension Operator {
 	enum OSCMessageCompare {
 		case any
 		case compare(address:StringCompare?, args:ArrayCompare?)
@@ -20,18 +19,17 @@ extension Operator {
 			default: return true
 			}
 		}
-	}
 }
 
 
 // MARK: - Json
 import SwiftyJSON
 
-extension Operator.OSCMessageCompare : JsonConvertibleType {
+extension OSCMessageCompare : JsonConvertibleType {
 	init(withJSON json:JSON) {
 		let args = json["args"]
 		switch json["type"] {
-		case "compare": self = .compare(address:Operator.StringCompare(withJSON:args["address"]), args:Operator.ArrayCompare(withJSON:args["args"]))
+		case "compare": self = .compare(address:StringCompare(withJSON:args["address"]), args:ArrayCompare(withJSON:args["args"]))
 		default: self = .any
 		}
 	}

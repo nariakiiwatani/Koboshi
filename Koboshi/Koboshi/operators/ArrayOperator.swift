@@ -8,25 +8,22 @@
 
 import Foundation
 
-extension Operator
-{
-	enum ArrayCompare {
-		case any
-		case count(Int)
-		case element(Int,Any)
-		func execute(_ data:[Any?]) -> Bool {
-			switch self {
-			case let .count(c): return data.count == c
-			case let .element(i,d):
-				guard data.count > i else {
-					return false
-				}
-				switch data[i] {
-				case is String: return strcmp((data[i] as! String), (d as! String)) == 0
-				default: return JSON(data[i] as Any) == JSON(d)
-				}
-			default: return true
+enum ArrayCompare {
+	case any
+	case count(Int)
+	case element(Int,Any)
+	func execute(_ data:[Any?]) -> Bool {
+		switch self {
+		case let .count(c): return data.count == c
+		case let .element(i,d):
+			guard data.count > i else {
+				return false
 			}
+			switch data[i] {
+			case is String: return strcmp((data[i] as! String), (d as! String)) == 0
+			default: return JSON(data[i] as Any) == JSON(d)
+			}
+		default: return true
 		}
 	}
 }
@@ -34,7 +31,7 @@ extension Operator
 // MARK: - Json
 import SwiftyJSON
 
-extension Operator.ArrayCompare : JsonConvertibleType {
+extension ArrayCompare : JsonConvertibleType {
 	init(withJSON json:JSON) {
 		let args = json["args"]
 		switch json["type"] {

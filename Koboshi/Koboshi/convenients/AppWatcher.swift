@@ -80,10 +80,10 @@ class AppWatcherEditor : NSObject
 		ref.statement.trigger = trigger.toTrigger()
 		ref.statement.op = 
 			Operator.and(
-				Operator.ifthen(Operator.applicationState(url: appurl, Operator.AppState.notRunning),
-				                Operator.applicationProc(url: appurl, Operator.AppProc.launchWithOptions(flags.options, args))),
+				Operator.ifthen(Operator.applicationState(url: appurl, AppState.notRunning),
+				                Operator.applicationProc(url: appurl, AppProc.launchWithOptions(flags.options, args))),
 				Operator.ifthen(Operator(keepActive),
-				                Operator.applicationProc(url: appurl, Operator.AppProc.activate))
+				                Operator.applicationProc(url: appurl, AppProc.activate))
 		)
 		ref.isRunning = running
 	}

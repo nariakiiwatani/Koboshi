@@ -14,9 +14,9 @@ class OSCTrigger : Trigger, OSCServerDelegateExt
 	var type: TriggerType { return .osc(messageComparator) }
 
 	weak var delegate: TriggerDelegate?
-	private var messageComparator : Operator.OSCMessageCompare
+	private var messageComparator : OSCMessageCompare
 	
-	init(withComparator comparator:Operator.OSCMessageCompare) {
+	init(withComparator comparator:OSCMessageCompare) {
 		messageComparator = comparator
 	}
 	var enable : Bool = false

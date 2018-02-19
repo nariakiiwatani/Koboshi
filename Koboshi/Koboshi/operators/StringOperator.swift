@@ -8,19 +8,17 @@
 
 import Foundation
 
-extension Operator {
-	enum StringCompare {
-		case any
-		case equals(_:String)
-		case contains(_:String)
-		case regex(_:String)
-		func execute(_ str:String) -> Bool {
-			switch self {
-			case let .equals(pattern): return str==pattern
-			case let .contains(pattern): return !(str.range(of: pattern)?.isEmpty ?? true)
-			case let .regex(pattern): return !(str.range(of: pattern, options: .regularExpression)?.isEmpty ?? true)
-			default: return true
-			}
+enum StringCompare {
+	case any
+	case equals(_:String)
+	case contains(_:String)
+	case regex(_:String)
+	func execute(_ str:String) -> Bool {
+		switch self {
+		case let .equals(pattern): return str==pattern
+		case let .contains(pattern): return !(str.range(of: pattern)?.isEmpty ?? true)
+		case let .regex(pattern): return !(str.range(of: pattern, options: .regularExpression)?.isEmpty ?? true)
+		default: return true
 		}
 	}
 }
@@ -29,7 +27,7 @@ extension Operator {
 // MARK: - Json
 import SwiftyJSON
 
-extension Operator.StringCompare : JsonConvertibleType {
+extension StringCompare : JsonConvertibleType {
 	init(withJSON json:JSON) {
 		let args = json["args"]
 		switch json["type"] {
@@ -50,8 +48,8 @@ extension Operator.StringCompare : JsonConvertibleType {
 	var args : Any {
 		switch self {
 		case let .equals(str),
-		let .contains(str),
-		let .regex(str): return ["pattern":str]
+		     let .contains(str),
+		     let .regex(str): return ["pattern":str]
 		default: return []
 		}
 	}

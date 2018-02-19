@@ -149,13 +149,13 @@ extension Operator : JsonConvertibleType {
 		case "ifelse":	self = .ifelse(Operator(withJSON: args[0]), Operator(withJSON: args[1]), Operator(withJSON: args[2]))
 		case "anyway":	self = .anyway(Operator(withJSON: args))
 		case "ignore":	self = .ignore(Operator(withJSON: args))
-		case "stringCompare":	self = .stringCompare(args["string"].stringValue, Operator.StringCompare(withJSON: args["args"]))
-		case "arrayCompare":	self = .arrayCompare(args["array"].arrayValue, Operator.ArrayCompare(withJSON: args["args"]))
-		case "appState":		self = .applicationState(url:URL(fileURLWithPath: args["url"].stringValue), Operator.AppState(withJSON: args["args"]))
-		case "appProc":			self = .applicationProc(url:URL(fileURLWithPath: args["url"].stringValue), Operator.AppProc(withJSON: args["args"]))
-		case "fileState":		self = .fileState(url:URL(fileURLWithPath: args["url"].stringValue), Operator.FileState(withJSON: args["args"]))
-		case "fileProc":		self = .fileProc(url:URL(fileURLWithPath: args["url"].stringValue), Operator.FileProc(withJSON: args["args"]))
-		case "shellScriptExec":	self = .shellScriptExec(program:URL(fileURLWithPath: args["program"].stringValue), Operator.ShellScriptExec(withJSON: args["args"]))
+		case "stringCompare":	self = .stringCompare(args["string"].stringValue, StringCompare(withJSON: args["args"]))
+		case "arrayCompare":	self = .arrayCompare(args["array"].arrayValue, ArrayCompare(withJSON: args["args"]))
+		case "appState":		self = .applicationState(url:URL(fileURLWithPath: args["url"].stringValue), AppState(withJSON: args["args"]))
+		case "appProc":			self = .applicationProc(url:URL(fileURLWithPath: args["url"].stringValue), AppProc(withJSON: args["args"]))
+		case "fileState":		self = .fileState(url:URL(fileURLWithPath: args["url"].stringValue), FileState(withJSON: args["args"]))
+		case "fileProc":		self = .fileProc(url:URL(fileURLWithPath: args["url"].stringValue), FileProc(withJSON: args["args"]))
+		case "shellScriptExec":	self = .shellScriptExec(program:URL(fileURLWithPath: args["program"].stringValue), ShellScriptExec(withJSON: args["args"]))
 		default: self = .none
 		}
 	}

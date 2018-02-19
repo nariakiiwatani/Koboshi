@@ -9,39 +9,37 @@
 import Foundation
 import AppKit
 
-extension Operator {
-	enum FileState {
-		case any
-		case exist
-		func execute(_ url:URL) -> Bool {
-			switch self {
-			case .exist:
-				return FileManager().fileExists(atPath: url.path)
-			default: return true
-			}
+enum FileState {
+	case any
+	case exist
+	func execute(_ url:URL) -> Bool {
+		switch self {
+		case .exist:
+			return FileManager().fileExists(atPath: url.path)
+		default: return true
 		}
 	}
-	enum FileProc {
-		case none
-		case open(withApp:URL)
-		case move(to:URL)
-		case copy(to:URL)
-		case create
-		case delete
-		func execute(_ url:URL) -> Bool {
-			switch self {
-			case .none: return true
-			case let .open(app):
-				return NSWorkspace().openFile(url.path, withApplication:app.path)
-			case let .move(to):
-				return (try? FileManager().moveItem(at: url, to: to)) != nil
-			case let .copy(to):
-				return (try? FileManager().copyItem(at: url, to: to)) != nil
-			case .create:
-				return FileManager().createFile(atPath: url.path, contents: nil)
-			case .delete:
-				return (try? FileManager().removeItem(at: url)) != nil
-			}
+}
+enum FileProc {
+	case none
+	case open(withApp:URL)
+	case move(to:URL)
+	case copy(to:URL)
+	case create
+	case delete
+	func execute(_ url:URL) -> Bool {
+		switch self {
+		case .none: return true
+		case let .open(app):
+			return NSWorkspace().openFile(url.path, withApplication:app.path)
+		case let .move(to):
+			return (try? FileManager().moveItem(at: url, to: to)) != nil
+		case let .copy(to):
+			return (try? FileManager().copyItem(at: url, to: to)) != nil
+		case .create:
+			return FileManager().createFile(atPath: url.path, contents: nil)
+		case .delete:
+			return (try? FileManager().removeItem(at: url)) != nil
 		}
 	}
 }
@@ -50,7 +48,7 @@ extension Operator {
 // MARK: - Json
 import SwiftyJSON
 
-extension Operator.FileState : JsonConvertibleType {
+extension FileState : JsonConvertibleType {
 	init(withJSON json:JSON) {
 		switch json["type"] {
 		case "exist": self = .exist
@@ -68,7 +66,7 @@ extension Operator.FileState : JsonConvertibleType {
 	}
 }
 
-extension Operator.FileProc : JsonConvertibleType {
+extension FileProc : JsonConvertibleType {
 	init(withJSON json:JSON) {
 		switch json["type"] {
 		case "open": self = .open(withApp:URL(fileURLWithPath:json["args"]["withApp"].stringValue))
