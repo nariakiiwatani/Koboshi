@@ -76,7 +76,7 @@ class StatementEditor : NSObject, NSOutlineViewDataSource, NSOutlineViewDelegate
 		}
 	}
 	public func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
-		let ret = { (item, tableColumn) -> NSView? in
+		let view = { (item, tableColumn) -> NSView? in
 			let item = item as! [JSONSubscriptType]
 			let json = jsonSrc[item]
 			switch tableColumn!.identifier {
@@ -95,8 +95,12 @@ class StatementEditor : NSObject, NSOutlineViewDataSource, NSOutlineViewDelegate
 			default: return nil
 			}
 		}(item, tableColumn)
-		(ret as? NSControl)?.target = self
-		(ret as? NSControl)?.action = #selector(StatementEditor.didEditValue(_:))
+		let ret = CustomCell()
+		ret.target = self
+		ret.action = #selector(StatementEditor.didEditValue(_:))
+		ret.addControl(control: view as! NSControl)
+		
+		ret.addControl(control: NSTextField(string: "te"))
 		return ret
 	}
 	
