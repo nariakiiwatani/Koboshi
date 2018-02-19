@@ -96,5 +96,12 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 			editor.json = JSON({})
 		}
 	}
+	public func selectionShouldChange(in tableView: NSTableView) -> Bool {
+		if tableView.selectedRow >= 0 {
+			statements[tableView.selectedRow].json = editor.json
+		}
+		return true
+	}
+
 }
 

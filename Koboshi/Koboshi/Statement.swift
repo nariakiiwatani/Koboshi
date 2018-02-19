@@ -32,15 +32,22 @@ import SwiftyJSON
 extension Statement {
 	convenience init(withJSON json:JSON) {
 		self.init()
-		name = json["name"].stringValue
-		trigger = TriggerType(withJSON:json["trigger"]).toTrigger()
-		op = Operator(withJSON:json["operator"])
+		self.json = json
 	}
 	var json : JSON {
-		return [
-			"name" : name,
-			"trigger" : trigger.type.json as Any,
-			"operator" : op.json,
-		]
+		get {
+			return [
+				"name" : name,
+				"trigger" : trigger.type.json,
+				"operator" : op.json,
+				"isRunning" : isRunning
+			]
+		}
+		set(_json) {
+			name = _json["name"].string ?? name
+			trigger = TriggerType(withJSON:_json["trigger"]).toTrigger()
+			op = Operator(withJSON:_json["operator"])
+			isRunning = _json["isRunning"].boolValue
+		}
 	}
 }
