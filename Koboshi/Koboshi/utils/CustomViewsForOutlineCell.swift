@@ -69,6 +69,9 @@ class CustomCell : NSView
 	func addControl(_ control: NSControl) {
 		control.target = self
 		control.action = #selector(CustomCell.childActionOccured(_:))
+		resultFuncs.append({ () -> String in
+			return control.stringValue
+		})
 		addSubview(control)
 	}
 }

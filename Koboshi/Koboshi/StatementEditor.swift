@@ -28,11 +28,14 @@ class StatementEditor : NSObject, NSOutlineViewDataSource, NSOutlineViewDelegate
 	}
 	
 	@IBAction func didEditValue(_ sender: Any) {
-		let row = outlineView.row(for: sender as! NSView)
+		guard let sender = sender as? CustomCell else { 
+			print("unknown sender type")
+			return
+		}
+		let row = outlineView.row(for: sender)
 		let item = outlineView.item(atRow: row) as! [JSONSubscriptType]
 		var json : JSON = jsonSrc
-		// TODO: 編集結果をjsonに反映
-//		json[item] = JSON(object)
+		json[item] = JSON(sender.result)
 		jsonSrc = [
 			"name" : json["name"],
 			"trigger" : TriggerType(withJSON: json["trigger"]).json,
@@ -98,9 +101,8 @@ class StatementEditor : NSObject, NSOutlineViewDataSource, NSOutlineViewDelegate
 		let ret = CustomCell()
 		ret.target = self
 		ret.action = #selector(StatementEditor.didEditValue(_:))
-		ret.addControl(control: view as! NSControl)
-		
-		ret.addControl(control: NSTextField(string: "te"))
+		ret.addControl(view as! NSControl)
+//		ret.addControl(.combo(["a","b","c"]))
 		return ret
 	}
 	
