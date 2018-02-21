@@ -114,12 +114,12 @@ extension Operator : JsonConvertibleType {
 		case let .and(l,r),
 		     let .nand(l,r),
 		     let .or(l,r),
-		     let .xor(l,r): return [l.json, r.json]
+		     let .xor(l,r): return ["cond1":l.json, "cond2":r.json]
 		case let .ifthen(c,s),
-		     let .ifnot(c,s): return [c.json, s.json]
-		case let .ifelse(c,t,f): return [c.json, t.json, f.json]
+		     let .ifnot(c,s): return ["condition":c.json, "statement":s.json]
+		case let .ifelse(c,t,f): return ["condition":c.json, "iftrue":t.json, "iffalse":f.json]
 		case let .anyway(o),
-		     let .ignore(o): return o.json
+		     let .ignore(o): return ["statement":o.json]
 
 		case let .stringCompare(str, comparator): return ["string":str, "args":comparator.json]
 
@@ -140,15 +140,15 @@ extension Operator : JsonConvertibleType {
 		case "none":	self = .none
 		case "always":	self = .always
 		case "never":	self = .never
-		case "and":		self = .and(Operator(withJSON: args[0]), Operator(withJSON: args[1]))
-		case "nand":	self = .nand(Operator(withJSON: args[0]), Operator(withJSON: args[1]))
-		case "or":		self = .or(Operator(withJSON: args[0]), Operator(withJSON: args[1]))
-		case "xor":		self = .xor(Operator(withJSON: args[0]), Operator(withJSON: args[1]))
-		case "ifthen":	self = .ifthen(Operator(withJSON: args[0]), Operator(withJSON: args[1]))
-		case "ifnot":	self = .ifnot(Operator(withJSON: args[0]), Operator(withJSON: args[1]))
-		case "ifelse":	self = .ifelse(Operator(withJSON: args[0]), Operator(withJSON: args[1]), Operator(withJSON: args[2]))
-		case "anyway":	self = .anyway(Operator(withJSON: args))
-		case "ignore":	self = .ignore(Operator(withJSON: args))
+		case "and":		self = .and(Operator(withJSON: args["cond1"]), Operator(withJSON: args["cond2"]))
+		case "nand":	self = .nand(Operator(withJSON: args["cond1"]), Operator(withJSON: args["cond2"]))
+		case "or":		self = .or(Operator(withJSON: args["cond1"]), Operator(withJSON: args["cond2"]))
+		case "xor":		self = .xor(Operator(withJSON: args["cond1"]), Operator(withJSON: args["cond2"]))
+		case "ifthen":	self = .ifthen(Operator(withJSON: args["condition"]), Operator(withJSON: args["statement"]))
+		case "ifnot":	self = .ifnot(Operator(withJSON: args["condition"]), Operator(withJSON: args["statement"]))
+		case "ifelse":	self = .ifelse(Operator(withJSON: args["condition"]), Operator(withJSON: args["iftrue"]), Operator(withJSON: args["ifelse"]))
+		case "anyway":	self = .anyway(Operator(withJSON: args["statement"]))
+		case "ignore":	self = .ignore(Operator(withJSON: args["statement"]))
 		case "stringCompare":	self = .stringCompare(args["string"].stringValue, StringCompare(withJSON: args["args"]))
 		case "arrayCompare":	self = .arrayCompare(args["array"].arrayValue, ArrayCompare(withJSON: args["args"]))
 		case "appState":		self = .applicationState(url:URL(fileURLWithPath: args["url"].stringValue), AppState(withJSON: args["args"]))
