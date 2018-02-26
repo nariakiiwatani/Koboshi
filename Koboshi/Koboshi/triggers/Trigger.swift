@@ -23,6 +23,7 @@ extension TriggerDelegate
 	}
 }
 enum TriggerType {
+	init() { self = .none }
 	case none
 	case interval(_:TimeInterval)
 	case osc(_:OSCMessageCompare)
@@ -47,8 +48,11 @@ import SwiftyJSON
 
 extension TriggerType : JsonConvertibleType
 {
+	var typename: String { return "triggerType" }
+
 	init(withJSON json: JSON) {
-		let type = json["type"].stringValue
+		self.init()
+		let type = json[typename].stringValue
 		let args = json["args"]
 		switch type {
 		case "interval": self = .interval(args["interval"].doubleValue)

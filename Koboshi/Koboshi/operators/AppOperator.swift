@@ -10,6 +10,7 @@ import Foundation
 import AppKit
 
 enum AppState {
+	init() { self = .any }
 	case any
 	case running
 	case notRunning
@@ -37,6 +38,7 @@ enum AppState {
 }
 
 enum AppProc {
+	init() { self = .none }
 	case none
 	case launch
 	case launchWithOptions(NSWorkspaceLaunchOptions, [String])
@@ -70,8 +72,11 @@ enum AppProc {
 import SwiftyJSON
 
 extension AppState : JsonConvertibleType {
+	static var typename: String { return "appStateType" }
+
 	init(withJSON json:JSON) {
-		switch json["type"] {
+		self.init()
+		switch json[typename] {
 		case "running": self = .running
 		case "notRunning": self = .notRunning
 		case "active": self = .active
@@ -91,9 +96,12 @@ extension AppState : JsonConvertibleType {
 	}
 }
 extension AppProc : JsonConvertibleType {
+	static var typename: String { return "appProcType" }
+
 	init(withJSON json:JSON) {
+		self.init()
 		let args = json["args"]
-		switch json["type"] {
+		switch json[typename] {
 		case "launch": self = .launch
 		case "launchWithOptions": self = .launchWithOptions(NSWorkspaceLaunchOptions(rawValue:args["flags"].uIntValue), args["args"].arrayValue.map{$0.stringValue})
 		case "activate": self = .activate

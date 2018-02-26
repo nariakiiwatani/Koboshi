@@ -10,6 +10,7 @@ import Foundation
 import AppKit
 
 enum FileState {
+	init() { self = .any }
 	case any
 	case exist
 	func execute(_ url:URL) -> Bool {
@@ -21,6 +22,7 @@ enum FileState {
 	}
 }
 enum FileProc {
+	init() { self = .none }
 	case none
 	case open(withApp:URL)
 	case move(to:URL)
@@ -49,8 +51,11 @@ enum FileProc {
 import SwiftyJSON
 
 extension FileState : JsonConvertibleType {
+	static var typename: String { return "fileStateType" }
+
 	init(withJSON json:JSON) {
-		switch json["type"] {
+		self.init()
+		switch json[typename] {
 		case "exist": self = .exist
 		default: self = .any
 		}
@@ -67,8 +72,11 @@ extension FileState : JsonConvertibleType {
 }
 
 extension FileProc : JsonConvertibleType {
+	static var typename: String { return "fileProcType" }
+
 	init(withJSON json:JSON) {
-		switch json["type"] {
+		self.init()
+		switch json[typename] {
 		case "open": self = .open(withApp:URL(fileURLWithPath:json["args"]["withApp"].stringValue))
 		case "move": self = .move(to:URL(fileURLWithPath:json["args"]["to"].stringValue))
 		case "copy": self = .copy(to:URL(fileURLWithPath:json["args"]["to"].stringValue))

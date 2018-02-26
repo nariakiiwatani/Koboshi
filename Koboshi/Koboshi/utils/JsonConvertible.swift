@@ -15,15 +15,16 @@ protocol JsonConvertible {
 }
 
 protocol JsonConvertibleType : JsonConvertible {
+	var typename : String{get}
+	var flatten : Bool{get}
 	var type : String{get}
 	var args : Any{get}
 }
 
 extension JsonConvertibleType {
+	var typename : String { return "type" }
+	var flatten : Bool { return false }
 	var json : JSON {
-		return [
-			"type" : JSON(type),
-			"args" : JSON(args)
-		]
+		return JSON([typename : type]).merged(JSON(flatten ? args : ["args":args]))
 	}
 }

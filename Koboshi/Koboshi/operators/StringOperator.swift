@@ -9,6 +9,7 @@
 import Foundation
 
 enum StringCompare {
+	init() { self = .any }
 	case any
 	case equals(_:String)
 	case contains(_:String)
@@ -28,9 +29,12 @@ enum StringCompare {
 import SwiftyJSON
 
 extension StringCompare : JsonConvertibleType {
+	static var typename: String { return "stringCompareType" }
+
 	init(withJSON json:JSON) {
+		self.init()
 		let args = json["args"]
-		switch json["type"] {
+		switch json[typename] {
 		case "equals": self = .equals(args["pattern"].stringValue)
 		case "contains": self = .contains(args["pattern"].stringValue)
 		case "regex": self = .regex(args["pattern"].stringValue)

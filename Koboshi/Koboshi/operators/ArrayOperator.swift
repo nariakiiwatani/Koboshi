@@ -9,6 +9,7 @@
 import Foundation
 
 enum ArrayCompare {
+	init() { self = .any }
 	case any
 	case count(Int)
 	case element(Int,Any)
@@ -32,9 +33,12 @@ enum ArrayCompare {
 import SwiftyJSON
 
 extension ArrayCompare : JsonConvertibleType {
+	static var typename: String { return "arrayCompareType" }
+
 	init(withJSON json:JSON) {
+		self.init()
 		let args = json["args"]
-		switch json["type"] {
+		switch json[typename] {
 		case "count": self = .count(args["value"].intValue)
 		case "element": self = .element(args["index"].intValue, args["value"].object)
 		default: self = .any

@@ -9,6 +9,7 @@
 import Foundation
 
 enum ShellScriptExec {
+	init() { self = .none }
 	case none
 	case file(URL, [String])
 	case command(String, [String])
@@ -49,9 +50,12 @@ enum ShellScriptExec {
 import SwiftyJSON
 
 extension ShellScriptExec : JsonConvertibleType {
+	static var typename: String { return "shellScriptExecType" }
+
 	init(withJSON json:JSON) {
+		self.init()
 		let args = json["args"]
-		switch json["type"] {
+		switch json[typename] {
 		case "file": self = .file(URL(fileURLWithPath:args["url"].stringValue), args["args"].arrayValue.map { $0.stringValue})
 		case "command": self = .command(args["command"].stringValue, args["args"].arrayValue.map { $0.stringValue})
 		default: self = .none

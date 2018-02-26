@@ -78,6 +78,8 @@ indirect enum Operator {
 import SwiftyJSON
 
 extension Operator : JsonConvertibleType {
+	static var typename: String { return "operatorType" }
+
 	var type : String {
 		switch self {
 		case .none: return "none"
@@ -135,8 +137,9 @@ extension Operator : JsonConvertibleType {
 		}
 	}
 	init(withJSON json:JSON) {
+		self.init()
 		let args = json["args"]
-		switch json["type"] {
+		switch json[typename] {
 		case "none":	self = .none
 		case "always":	self = .always
 		case "never":	self = .never
