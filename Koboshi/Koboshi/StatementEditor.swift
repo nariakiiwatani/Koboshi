@@ -15,7 +15,10 @@ class StatementEditor : NSObject, NSOutlineViewDataSource, NSOutlineViewDelegate
 	var jsonSrc = JSON({})
 	public var json : JSON {
 		set {
-			jsonSrc = newValue
+			jsonSrc = [
+				"trigger" : TriggerType(withJSON: newValue["trigger"]).json,
+				"operator": Operator(withJSON: newValue["operator"]).json,
+			]
 			outlineView.reloadItem(nil, reloadChildren:true)
 		}
 		get {
@@ -33,15 +36,11 @@ class StatementEditor : NSObject, NSOutlineViewDataSource, NSOutlineViewDelegate
 			return
 		}
 		let row = outlineView.row(for: sender)
+		guard row >= 0 else { return }
 		let item = outlineView.item(atRow: row) as! [JSONSubscriptType]
-		var json : JSON = jsonSrc
-		json[item] = JSON(sender.result)
-		jsonSrc = [
-			"name" : json["name"],
-			"trigger" : TriggerType(withJSON: json["trigger"]).json,
-			"operator": Operator(withJSON: json["operator"]).json
-		]
-		outlineView.reloadItem(nil, reloadChildren:true)
+		var _json : JSON = jsonSrc
+		_json[item] = JSON(sender.result)
+		self.json = _json
 	}
 	
 	public func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
@@ -78,32 +77,51 @@ class StatementEditor : NSObject, NSOutlineViewDataSource, NSOutlineViewDelegate
 		default: return false
 		}
 	}
+	func typeArray(byItem keys: [JSONSubscriptType]) -> [String]? {
+		guard let lastKey = keys.last as? String else {
+			return nil
+		}
+		switch lastKey {
+		case Operator().typename: return Operator.allTypes
+		case AppState().typename: return AppState.allTypes
+		case AppProc().typename: return AppProc.allTypes
+		case FileState().typename: return FileState.allTypes
+		case FileProc().typename: return FileProc.allTypes
+		case ShellScriptExec().typename: return ShellScriptExec.allTypes
+		case StringCompare().typename: return StringCompare.allTypes
+		case ArrayCompare().typename: return ArrayCompare.allTypes
+		case OSCMessageCompare().typename: return OSCMessageCompare.allTypes
+		default:
+			return nil
+		}
+	}
 	public func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
-		let view = { (item, tableColumn) -> NSView? in
-			let item = item as! [JSONSubscriptType]
-			let json = jsonSrc[item]
-			switch tableColumn!.identifier {
-			case "TableKey":
-				return NSTextField(labelWithString: item.last as! String)
-			case "TableValue":
-				switch json.type {
-				case .array: return NSTextField(labelWithString: "(array)")
-				case .dictionary: return NSTextField(labelWithString: "(object)")
-				case .bool: return NSTextField(string: json.boolValue ? "true" : "false")
-				case .null: return NSTextField(string: "null")
-				case .number: return NSTextField(string: String(describing: json.numberValue))
-				case .string: return NSTextField(string: json.stringValue)
-				default: return nil
-				}
-			default: return nil
+		let item = item as! [JSONSubscriptType]
+		let json = jsonSrc[item]
+		switch tableColumn!.identifier {
+		case "TableKey":
+			return NSTextField(labelWithString: item.last as! String)
+		case "TableValue":
+			let ret = CustomCell()
+			ret.target = self
+			ret.action = #selector(StatementEditor.didEditValue(_:))
+			if let typeList = typeArray(byItem: item) {
+				ret.addControl(.combo(typeList, jsonSrc[item].stringValue))
 			}
-		}(item, tableColumn)
-		let ret = CustomCell()
-		ret.target = self
-		ret.action = #selector(StatementEditor.didEditValue(_:))
-		ret.addControl(view as! NSControl)
-//		ret.addControl(.combo(["a","b","c"]))
-		return ret
+			else {
+				switch json.type {
+				case .array: ret.addControl(.label("(array)"))
+				case .dictionary: ret.addControl(.label("(object)"))
+				case .bool: ret.addControl(.text(json.boolValue ? "true" : "false"))
+				case .null: ret.addControl(.text("null"))
+				case .number: ret.addControl(.text(String(describing: json.numberValue)))
+				case .string: ret.addControl(.text(json.stringValue))
+				default: break
+				}
+			}
+			return ret
+		default: return nil
+		}
 	}
 	
 	

@@ -27,7 +27,10 @@ enum OSCMessageCompare {
 import SwiftyJSON
 
 extension OSCMessageCompare : JsonConvertibleType {
-	static var typename: String { return "oscMessageCompareType" }
+	var typename: String { return "oscMessageCompareType" }
+	static var allTypes : [String] {
+		return ["any","compare"]
+	}
 
 	init(withJSON json:JSON) {
 		self.init()

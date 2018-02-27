@@ -10,6 +10,8 @@ import Cocoa
 
 enum CustomControlType
 {
+	case text(String)
+	case label(String)
 	case combo([String], String)
 	case browseFile(String)
 }
@@ -27,6 +29,18 @@ class CustomCell : NSView
 	
 	func addControl(_ controlType: CustomControlType) {
 		switch controlType {
+		case let .text(str):
+			let text = NSTextField(string: str)
+			addControl(text)
+			resultFuncs.append({ () -> String in
+				return text.stringValue
+			})
+		case let .label(str):
+			let text = NSTextField(labelWithString: str)
+			addControl(text)
+			resultFuncs.append({ () -> String in
+				return text.stringValue
+			})
 		case let .combo(list, label):
 			let combo = NSComboBox(string: label)
 			combo.addItems(withObjectValues: list)
@@ -69,9 +83,6 @@ class CustomCell : NSView
 	func addControl(_ control: NSControl) {
 		control.target = self
 		control.action = #selector(CustomCell.childActionOccured(_:))
-		resultFuncs.append({ () -> String in
-			return control.stringValue
-		})
 		addSubview(control)
 	}
 }

@@ -78,7 +78,12 @@ indirect enum Operator {
 import SwiftyJSON
 
 extension Operator : JsonConvertibleType {
-	static var typename: String { return "operatorType" }
+	var typename: String { return "operatorType" }
+	static var allTypes : [String] {
+		return ["none","always","never","and","nand","or","xor",
+		"ifthen","ifnot","ifelse","anyway","ignore",
+		"stringCompare","arrayCompare","appState","appProc","fileState","fileProc","shellScriptExec"]
+	}
 
 	var type : String {
 		switch self {

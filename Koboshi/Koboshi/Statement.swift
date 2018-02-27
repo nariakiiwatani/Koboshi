@@ -12,12 +12,18 @@ import Foundation
 class Statement : NSObject, TriggerDelegate
 {
 	var name = "New Item"
-	var trigger : Trigger! {
-		didSet { trigger.delegate = self }
+	var trigger : Trigger? {
+		willSet {
+			newValue?.enable = isRunning
+			if trigger !== newValue {
+				trigger?.enable = false
+			}
+		}
+		didSet { trigger?.delegate = self }
 	}
 	var isRunning : Bool {
-		set { trigger.enable = newValue }
-		get { return trigger.enable }
+		set { trigger?.enable = newValue }
+		get { return trigger?.enable ?? false }
 	}
 
 	var op = Operator()
@@ -38,7 +44,7 @@ extension Statement {
 		get {
 			return [
 				"name" : name,
-				"trigger" : trigger.type.json,
+				"trigger" : trigger?.type.json ?? {},
 				"operator" : op.json,
 				"isRunning" : isRunning
 			]

@@ -72,8 +72,11 @@ enum AppProc {
 import SwiftyJSON
 
 extension AppState : JsonConvertibleType {
-	static var typename: String { return "appStateType" }
-
+	var typename: String { return "appStateType" }
+	static var allTypes : [String] {
+		return ["any","running","notRunning","active"]
+	}
+	
 	init(withJSON json:JSON) {
 		self.init()
 		switch json[typename] {
@@ -96,7 +99,10 @@ extension AppState : JsonConvertibleType {
 	}
 }
 extension AppProc : JsonConvertibleType {
-	static var typename: String { return "appProcType" }
+	var typename: String { return "appProcType" }
+	static var allTypes : [String] {
+		return ["none","launch","launchWithControl","activate","terminate"]
+	}
 
 	init(withJSON json:JSON) {
 		self.init()

@@ -29,7 +29,10 @@ enum StringCompare {
 import SwiftyJSON
 
 extension StringCompare : JsonConvertibleType {
-	static var typename: String { return "stringCompareType" }
+	var typename: String { return "stringCompareType" }
+	static var allTypes : [String] {
+		return ["any","equals","contains","regex"]
+	}
 
 	init(withJSON json:JSON) {
 		self.init()

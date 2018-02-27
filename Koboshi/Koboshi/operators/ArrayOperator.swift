@@ -33,7 +33,10 @@ enum ArrayCompare {
 import SwiftyJSON
 
 extension ArrayCompare : JsonConvertibleType {
-	static var typename: String { return "arrayCompareType" }
+	var typename: String { return "arrayCompareType" }
+	static var allTypes : [String] {
+		return ["any","count","element"]
+	}
 
 	init(withJSON json:JSON) {
 		self.init()

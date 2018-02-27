@@ -51,7 +51,10 @@ enum FileProc {
 import SwiftyJSON
 
 extension FileState : JsonConvertibleType {
-	static var typename: String { return "fileStateType" }
+	var typename: String { return "fileStateType" }
+	static var allTypes : [String] {
+		return ["any","exist"]
+	}
 
 	init(withJSON json:JSON) {
 		self.init()
@@ -72,7 +75,10 @@ extension FileState : JsonConvertibleType {
 }
 
 extension FileProc : JsonConvertibleType {
-	static var typename: String { return "fileProcType" }
+	var typename: String { return "fileProcType" }
+	static var allTypes : [String] {
+		return ["none","open","move","copy","create","delete"]
+	}
 
 	init(withJSON json:JSON) {
 		self.init()

@@ -50,7 +50,10 @@ enum ShellScriptExec {
 import SwiftyJSON
 
 extension ShellScriptExec : JsonConvertibleType {
-	static var typename: String { return "shellScriptExecType" }
+	var typename: String { return "shellScriptExecType" }
+	static var allTypes : [String] {
+		return ["none","file","command"]
+	}
 
 	init(withJSON json:JSON) {
 		self.init()
