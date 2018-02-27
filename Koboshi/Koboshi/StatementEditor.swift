@@ -91,6 +91,7 @@ class StatementEditor : NSObject, NSOutlineViewDataSource, NSOutlineViewDelegate
 		case StringCompare().typename: return StringCompare.allTypes
 		case ArrayCompare().typename: return ArrayCompare.allTypes
 		case OSCMessageCompare().typename: return OSCMessageCompare.allTypes
+		case TriggerType().typename: return TriggerType.allTypes
 		default:
 			return nil
 		}

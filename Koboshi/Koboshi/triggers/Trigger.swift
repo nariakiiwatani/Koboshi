@@ -49,6 +49,9 @@ import SwiftyJSON
 extension TriggerType : JsonConvertibleType
 {
 	var typename: String { return "triggerType" }
+	static var allTypes : [String] {
+		return ["interval","osc"]
+	}
 
 	init(withJSON json: JSON) {
 		self.init()
