@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		814F7FB72028348400FB6AD3 /* AppWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814F7FB62028348400FB6AD3 /* AppWatcher.swift */; };
 		817B5AB8203D6DE3003D51C9 /* SwiftyJSON+merge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817B5AB7203D6DE3003D51C9 /* SwiftyJSON+merge.swift */; };
 		81D1C436202ADB4F00959EE0 /* String+split.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D1C435202ADB4F00959EE0 /* String+split.swift */; };
 		81D1C448202C0B3D00959EE0 /* SwiftOSC.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 81FD6D7820183D1B006CF79B /* SwiftOSC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -67,7 +66,6 @@
 /* Begin PBXFileReference section */
 		17104F9CDACC2AEB30A30A89 /* Pods-Koboshi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Koboshi.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Koboshi/Pods-Koboshi.debug.xcconfig"; sourceTree = "<group>"; };
 		20FEC577EDF0E78ED55DD941 /* Pods_Koboshi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Koboshi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		814F7FB62028348400FB6AD3 /* AppWatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppWatcher.swift; sourceTree = "<group>"; };
 		817B5AB7203D6DE3003D51C9 /* SwiftyJSON+merge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftyJSON+merge.swift"; sourceTree = "<group>"; };
 		81D1C435202ADB4F00959EE0 /* String+split.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+split.swift"; path = "Koboshi/utils/String+split.swift"; sourceTree = SOURCE_ROOT; };
 		81D1C4DC202D5FD100959EE0 /* StatementEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatementEditor.swift; sourceTree = "<group>"; };
@@ -125,14 +123,6 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		814F7FB32028347A00FB6AD3 /* convenients */ = {
-			isa = PBXGroup;
-			children = (
-				814F7FB62028348400FB6AD3 /* AppWatcher.swift */,
-			);
-			path = convenients;
-			sourceTree = "<group>";
-		};
 		81D590091FF37B7F008B4326 = {
 			isa = PBXGroup;
 			children = (
@@ -155,7 +145,6 @@
 		81D590141FF37B7F008B4326 /* Koboshi */ = {
 			isa = PBXGroup;
 			children = (
-				814F7FB32028347A00FB6AD3 /* convenients */,
 				81FD6D8020186C65006CF79B /* utils */,
 				81FD6D5E20181AD6006CF79B /* triggers */,
 				81E3EAA71FFB1C78005039E3 /* operators */,
@@ -368,7 +357,6 @@
 				81D1C4E7203A7DEB00959EE0 /* JsonConvertible.swift in Sources */,
 				81FD6D7D2018417A006CF79B /* OSCMessageOperator.swift in Sources */,
 				81E3EAAF1FFB1CD2005039E3 /* FileOperator.swift in Sources */,
-				814F7FB72028348400FB6AD3 /* AppWatcher.swift in Sources */,
 				81E3EAAD1FFB1CC6005039E3 /* ShellScriptOperator.swift in Sources */,
 				81D590181FF37B7F008B4326 /* ViewController.swift in Sources */,
 				81D1C4EB203AADBD00959EE0 /* CustomViewsForOutlineCell.swift in Sources */,
