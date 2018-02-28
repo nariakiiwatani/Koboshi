@@ -49,17 +49,17 @@ import SwiftyJSON
 extension TriggerType : JsonConvertibleType
 {
 	var typename: String { return "triggerType" }
+	var flatten : Bool { return true }
 	static var allTypes : [String] {
 		return ["interval","osc"]
 	}
 
 	init(withJSON json: JSON) {
 		self.init()
-		let type = json[typename].stringValue
-		let args = json["args"]
-		switch type {
+		let args = flatten ? json : json["args"]
+		switch json[typename] {
 		case "interval": self = .interval(args["interval"].doubleValue)
-		case "osc": self = .osc(args["port"].intValue, OSCMessageCompare(withJSON:args["compare"]))
+		case "osc": self = .osc(args["port"].intValue, OSCMessageCompare(withJSON:args["message"]))
 		default:
 			self = .none
 		}
@@ -68,7 +68,7 @@ extension TriggerType : JsonConvertibleType
 	var args: Any {
 		switch self {
 		case let .interval(i): return ["interval":i]
-		case let .osc(p,c): return ["port":p, "compare":c.json]
+		case let .osc(p,c): return ["port":p, "message":c.json]
 		default: return []
 		}
 	}

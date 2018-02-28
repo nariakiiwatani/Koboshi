@@ -73,6 +73,7 @@ import SwiftyJSON
 
 extension AppState : JsonConvertibleType {
 	var typename: String { return "appStateType" }
+	var flatten : Bool { return true }
 	static var allTypes : [String] {
 		return ["any","running","notRunning","active"]
 	}
@@ -95,21 +96,22 @@ extension AppState : JsonConvertibleType {
 		}
 	}
 	var args : Any {
-		return []
+		return {}
 	}
 }
 extension AppProc : JsonConvertibleType {
 	var typename: String { return "appProcType" }
+	var flatten : Bool { return true }
 	static var allTypes : [String] {
-		return ["none","launch","launchWithControl","activate","terminate"]
+		return ["none","launch","launchWithOptions","activate","terminate"]
 	}
 
 	init(withJSON json:JSON) {
 		self.init()
-		let args = json["args"]
+		let args = flatten ? json : json["args"]
 		switch json[typename] {
 		case "launch": self = .launch
-		case "launchWithOptions": self = .launchWithOptions(NSWorkspaceLaunchOptions(rawValue:args["flags"].uIntValue), args["args"].arrayValue.map{$0.stringValue})
+		case "launchWithOptions": self = .launchWithOptions(NSWorkspaceLaunchOptions(rawValue:args["flags"].uIntValue), args["arguments"].arrayValue.map{$0.stringValue})
 		case "activate": self = .activate
 		case "terminate": self = .terminate
 		default: self = .none
@@ -128,9 +130,9 @@ extension AppProc : JsonConvertibleType {
 		switch self {
 		case let .launchWithOptions(options, args): return [
 			"flags" : options.rawValue,
-			"args" : args
+			"arguments" : args
 			]
-		default: return []
+		default: return {}
 		}
 	}
 }

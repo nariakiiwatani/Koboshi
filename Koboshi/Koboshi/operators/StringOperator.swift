@@ -30,13 +30,14 @@ import SwiftyJSON
 
 extension StringCompare : JsonConvertibleType {
 	var typename: String { return "stringCompareType" }
+	var flatten : Bool { return true }
 	static var allTypes : [String] {
 		return ["any","equals","contains","regex"]
 	}
 
 	init(withJSON json:JSON) {
 		self.init()
-		let args = json["args"]
+		let args = flatten ? json : json["args"]
 		switch json[typename] {
 		case "equals": self = .equals(args["pattern"].stringValue)
 		case "contains": self = .contains(args["pattern"].stringValue)
@@ -57,7 +58,7 @@ extension StringCompare : JsonConvertibleType {
 		case let .equals(str),
 		     let .contains(str),
 		     let .regex(str): return ["pattern":str]
-		default: return []
+		default: return {}
 		}
 	}
 }

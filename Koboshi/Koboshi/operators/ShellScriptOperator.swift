@@ -51,16 +51,17 @@ import SwiftyJSON
 
 extension ShellScriptExec : JsonConvertibleType {
 	var typename: String { return "shellScriptExecType" }
+	var flatten : Bool { return true }
 	static var allTypes : [String] {
 		return ["none","file","command"]
 	}
 
 	init(withJSON json:JSON) {
 		self.init()
-		let args = json["args"]
+		let args = flatten ? json : json["args"]
 		switch json[typename] {
-		case "file": self = .file(URL(fileURLWithPath:args["url"].stringValue), args["args"].arrayValue.map { $0.stringValue})
-		case "command": self = .command(args["command"].stringValue, args["args"].arrayValue.map { $0.stringValue})
+		case "file": self = .file(URL(fileURLWithPath:args["url"].stringValue), args["arguments"].arrayValue.map { $0.stringValue})
+		case "command": self = .command(args["command"].stringValue, args["arguments"].arrayValue.map { $0.stringValue})
 		default: self = .none
 		}
 	}
@@ -73,9 +74,9 @@ extension ShellScriptExec : JsonConvertibleType {
 	}
 	var args : Any {
 		switch self {
-		case let .file(url, args): return ["url":url, "args":args]
-		case let .command(command, args): return ["command":command, "args":args]
-		default: return []
+		case let .file(url, args): return ["url":url, "arguments":args]
+		case let .command(command, args): return ["command":command, "arguments":args]
+		default: return {}
 		}
 	}
 }

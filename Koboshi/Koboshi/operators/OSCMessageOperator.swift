@@ -12,7 +12,7 @@ import SwiftOSC
 enum OSCMessageCompare {
 	init() { self = .any }
 	case any
-	case compare(address:StringCompare?, args:ArrayCompare?)
+	case compare(address:StringCompare?, arguments:ArrayCompare?)
 	func execute(_ message:OSCMessage) -> Bool {
 		switch self {
 		case let .compare(address, args):
@@ -28,15 +28,16 @@ import SwiftyJSON
 
 extension OSCMessageCompare : JsonConvertibleType {
 	var typename: String { return "oscMessageCompareType" }
+	var flatten : Bool { return true }
 	static var allTypes : [String] {
 		return ["any","compare"]
 	}
 
 	init(withJSON json:JSON) {
 		self.init()
-		let args = json["args"]
+		let args = flatten ? json : json["args"]
 		switch json[typename] {
-		case "compare": self = .compare(address:StringCompare(withJSON:args["address"]), args:ArrayCompare(withJSON:args["args"]))
+		case "compare": self = .compare(address:StringCompare(withJSON:args["address"]), arguments:ArrayCompare(withJSON:args["arguments"]))
 		default: self = .any
 		}
 	}
@@ -48,8 +49,8 @@ extension OSCMessageCompare : JsonConvertibleType {
 	}
 	var args : Any {
 		switch self {
-		case let .compare(address,args): return ["address":address?.json ?? [], "args":args?.json ?? []]
-		default: return []
+		case let .compare(address,args): return ["address":address?.json ?? [], "arguments":args?.json ?? []]
+		default: return {}
 		}
 	}
 }

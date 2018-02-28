@@ -34,13 +34,14 @@ import SwiftyJSON
 
 extension ArrayCompare : JsonConvertibleType {
 	var typename: String { return "arrayCompareType" }
+	var flatten : Bool { return true }
 	static var allTypes : [String] {
 		return ["any","count","element"]
 	}
 
 	init(withJSON json:JSON) {
 		self.init()
-		let args = json["args"]
+		let args = flatten ? json : json["args"]
 		switch json[typename] {
 		case "count": self = .count(args["value"].intValue)
 		case "element": self = .element(args["index"].intValue, args["value"].object)
@@ -58,7 +59,7 @@ extension ArrayCompare : JsonConvertibleType {
 		switch self {
 		case let .count(c): return ["value":c]
 		case let .element(i,d): return ["index":i, "value":d]
-		default: return []
+		default: return {}
 		}
 	}
 }

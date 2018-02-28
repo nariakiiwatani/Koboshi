@@ -70,22 +70,24 @@ extension FileState : JsonConvertibleType {
 		}
 	}
 	var args : Any {
-		return []
+		return {}
 	}
 }
 
 extension FileProc : JsonConvertibleType {
 	var typename: String { return "fileProcType" }
+	var flatten : Bool { return true }
 	static var allTypes : [String] {
 		return ["none","open","move","copy","create","delete"]
 	}
 
 	init(withJSON json:JSON) {
 		self.init()
+		let args = flatten ? json : json["args"]
 		switch json[typename] {
-		case "open": self = .open(withApp:URL(fileURLWithPath:json["args"]["withApp"].stringValue))
-		case "move": self = .move(to:URL(fileURLWithPath:json["args"]["to"].stringValue))
-		case "copy": self = .copy(to:URL(fileURLWithPath:json["args"]["to"].stringValue))
+		case "open": self = .open(withApp:URL(fileURLWithPath:args["withApp"].stringValue))
+		case "move": self = .move(to:URL(fileURLWithPath:args["to"].stringValue))
+		case "copy": self = .copy(to:URL(fileURLWithPath:args["to"].stringValue))
 		case "create": self = .create
 		case "delete": self = .delete
 		default: self = .none
@@ -105,7 +107,7 @@ extension FileProc : JsonConvertibleType {
 		switch self {
 		case .none,
 		     .create,
-		     .delete: return []
+		     .delete: return {}
 		case let .open(url): return ["withApp":url.path]
 		case let .move(url),
 		     let .copy(url): return ["to":url.path] 

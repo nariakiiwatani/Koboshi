@@ -79,6 +79,7 @@ import SwiftyJSON
 
 extension Operator : JsonConvertibleType {
 	var typename: String { return "operatorType" }
+	var flatten : Bool { return true }
 	static var allTypes : [String] {
 		return ["none","always","never","and","nand","or","xor",
 		"ifthen","ifnot","ifelse","anyway","ignore",
@@ -117,7 +118,7 @@ extension Operator : JsonConvertibleType {
 		switch self {
 		case .none,
 		     .always,
-		     .never: return []
+		     .never: return {}
 		case let .and(l,r),
 		     let .nand(l,r),
 		     let .or(l,r),
@@ -128,22 +129,22 @@ extension Operator : JsonConvertibleType {
 		case let .anyway(o),
 		     let .ignore(o): return ["statement":o.json]
 
-		case let .stringCompare(str, comparator): return ["string":str, "args":comparator.json]
+		case let .stringCompare(str, comparator): return ["string":str, "comparator":comparator.json]
 
-		case let .arrayCompare(arr, comparator): return ["array":arr, "args":comparator.json]
+		case let .arrayCompare(arr, comparator): return ["array":arr, "comparator":comparator.json]
 
-		case let .applicationState(url, state): return ["url":url.path, "args":state.json]
-		case let .applicationProc(url, proc): return ["url":url.path, "args":proc.json]
+		case let .applicationState(url, state): return ["url":url.path, "state":state.json]
+		case let .applicationProc(url, proc): return ["url":url.path, "proc":proc.json]
 			
-		case let .fileState(url, state): return ["url":url.path, "args":state.json]
-		case let .fileProc(url, proc): return ["url":url.path, "args":proc.json]
+		case let .fileState(url, state): return ["url":url.path, "state":state.json]
+		case let .fileProc(url, proc): return ["url":url.path, "proc":proc.json]
 		
-		case let .shellScriptExec(program,exec): return ["program":program.path, "args":exec.json]
+		case let .shellScriptExec(program,exec): return ["program":program.path, "exec":exec.json]
 		}
 	}
 	init(withJSON json:JSON) {
 		self.init()
-		let args = json["args"]
+		let args = flatten ? json : json["args"]
 		switch json[typename] {
 		case "none":	self = .none
 		case "always":	self = .always
@@ -157,13 +158,13 @@ extension Operator : JsonConvertibleType {
 		case "ifelse":	self = .ifelse(Operator(withJSON: args["condition"]), Operator(withJSON: args["iftrue"]), Operator(withJSON: args["ifelse"]))
 		case "anyway":	self = .anyway(Operator(withJSON: args["statement"]))
 		case "ignore":	self = .ignore(Operator(withJSON: args["statement"]))
-		case "stringCompare":	self = .stringCompare(args["string"].stringValue, StringCompare(withJSON: args["args"]))
-		case "arrayCompare":	self = .arrayCompare(args["array"].arrayValue, ArrayCompare(withJSON: args["args"]))
-		case "appState":		self = .applicationState(url:URL(fileURLWithPath: args["url"].stringValue), AppState(withJSON: args["args"]))
-		case "appProc":			self = .applicationProc(url:URL(fileURLWithPath: args["url"].stringValue), AppProc(withJSON: args["args"]))
-		case "fileState":		self = .fileState(url:URL(fileURLWithPath: args["url"].stringValue), FileState(withJSON: args["args"]))
-		case "fileProc":		self = .fileProc(url:URL(fileURLWithPath: args["url"].stringValue), FileProc(withJSON: args["args"]))
-		case "shellScriptExec":	self = .shellScriptExec(program:URL(fileURLWithPath: args["program"].stringValue), ShellScriptExec(withJSON: args["args"]))
+		case "stringCompare":	self = .stringCompare(args["string"].stringValue, StringCompare(withJSON: args["comparator"]))
+		case "arrayCompare":	self = .arrayCompare(args["array"].arrayValue, ArrayCompare(withJSON: args["comparator"]))
+		case "appState":		self = .applicationState(url:URL(fileURLWithPath: args["url"].stringValue), AppState(withJSON: args["state"]))
+		case "appProc":			self = .applicationProc(url:URL(fileURLWithPath: args["url"].stringValue), AppProc(withJSON: args["proc"]))
+		case "fileState":		self = .fileState(url:URL(fileURLWithPath: args["url"].stringValue), FileState(withJSON: args["state"]))
+		case "fileProc":		self = .fileProc(url:URL(fileURLWithPath: args["url"].stringValue), FileProc(withJSON: args["proc"]))
+		case "shellScriptExec":	self = .shellScriptExec(program:URL(fileURLWithPath: args["program"].stringValue), ShellScriptExec(withJSON: args["exec"]))
 		default: self = .none
 		}
 	}
