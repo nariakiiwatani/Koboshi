@@ -171,6 +171,7 @@ extension ViewController {
 				self.filepath = url
 				self.statements.removeAll()
 				self.importFromFile(url)
+				NSDocumentController.shared().noteNewRecentDocumentURL(url)
 			}
 		}
 	}
