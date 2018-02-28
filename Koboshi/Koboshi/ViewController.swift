@@ -93,7 +93,25 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 	}
 	public func selectionShouldChange(in tableView: NSTableView) -> Bool {
 		if tableView.selectedRow >= 0 {
-			statements[tableView.selectedRow].json = statements[tableView.selectedRow].json.merged(editor.json)
+			if editor.edited {
+				let alert = NSAlert()
+				alert.messageText = "Save changes?"
+				alert.alertStyle = .warning
+				alert.addButton(withTitle: "Save")
+				alert.addButton(withTitle: "Back to Edit")
+				alert.addButton(withTitle: "Discard Changes")
+				switch alert.runModal() {
+				case NSAlertFirstButtonReturn:
+					let statement = statements[tableView.selectedRow]
+					statement.json = statement.json.merged(editor.json)
+				case NSAlertSecondButtonReturn:
+					return false
+				case NSAlertThirdButtonReturn:
+					break
+				default:
+					break
+				}
+			}
 		}
 		return true
 	}

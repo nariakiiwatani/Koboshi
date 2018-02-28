@@ -12,6 +12,7 @@ import SwiftyJSON
 class StatementEditor : NSObject, NSOutlineViewDataSource, NSOutlineViewDelegate
 {
 	@IBOutlet weak var outlineView: NSOutlineView!
+	var edited : Bool = false
 	var jsonSrc = JSON({})
 	public var json : JSON {
 		set {
@@ -19,6 +20,7 @@ class StatementEditor : NSObject, NSOutlineViewDataSource, NSOutlineViewDelegate
 				"trigger" : TriggerType(withJSON: newValue["trigger"]).json,
 				"operator": Operator(withJSON: newValue["operator"]).json,
 			]
+			edited = false
 			outlineView.reloadItem(nil, reloadChildren:true)
 		}
 		get {
@@ -41,6 +43,7 @@ class StatementEditor : NSObject, NSOutlineViewDataSource, NSOutlineViewDelegate
 		var _json : JSON = jsonSrc
 		_json[item] = JSON(sender.result)
 		self.json = _json
+		edited = true
 	}
 	
 	public func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
