@@ -172,6 +172,9 @@ extension ViewController {
 				self.statements.removeAll()
 				self.importFromFile(url)
 				NSDocumentController.shared().noteNewRecentDocumentURL(url)
+				if !self.statements.isEmpty {
+					self.tableView.selectRowIndexes([0], byExtendingSelection: false)
+				}
 			}
 		}
 	}
@@ -199,9 +202,6 @@ extension ViewController {
 			let json = JSON(parseJSON: data)
 			_ = json.array?.map{statements.append(Statement(withJSON: $0))}
 			tableView.reloadData()
-			if !statements.isEmpty {
-				tableView.selectRowIndexes([0], byExtendingSelection: false)
-			}
 		} catch {                
 		} 
 	}
