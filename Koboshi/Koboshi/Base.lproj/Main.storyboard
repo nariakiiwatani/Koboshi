@@ -764,7 +764,7 @@
                                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                             <subviews>
                                                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="adN-Vi-MhQ">
-                                                                                    <rect key="frame" x="0.0" y="0.0" width="52" height="17"/>
+                                                                                    <rect key="frame" x="-2" y="0.0" width="103" height="17"/>
                                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="RRe-gF-wzO">
                                                                                         <font key="font" metaFont="system"/>
                                                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -782,8 +782,8 @@
                                                                                 </textField>
                                                                             </subviews>
                                                                             <constraints>
-                                                                                <constraint firstItem="adN-Vi-MhQ" firstAttribute="leading" secondItem="c3A-j8-yGp" secondAttribute="leading" constant="2" id="YT6-Jr-8qV"/>
-                                                                                <constraint firstAttribute="trailing" secondItem="adN-Vi-MhQ" secondAttribute="trailing" constant="49" id="ajR-w3-UGP"/>
+                                                                                <constraint firstItem="adN-Vi-MhQ" firstAttribute="leading" secondItem="c3A-j8-yGp" secondAttribute="leading" id="YT6-Jr-8qV"/>
+                                                                                <constraint firstAttribute="trailing" secondItem="adN-Vi-MhQ" secondAttribute="trailing" id="ajR-w3-UGP"/>
                                                                                 <constraint firstItem="adN-Vi-MhQ" firstAttribute="centerY" secondItem="c3A-j8-yGp" secondAttribute="centerY" id="uQh-4M-4hd"/>
                                                                             </constraints>
                                                                         </tableCellView>
@@ -847,11 +847,11 @@
                                             <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="De6-tC-xzg">
                                                 <rect key="frame" x="0.0" y="0.0" width="355" height="367"/>
                                                 <clipView key="contentView" id="Y00-ZY-GYq">
-                                                    <rect key="frame" x="1" y="0.0" width="353" height="366"/>
+                                                    <rect key="frame" x="1" y="1" width="353" height="365"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
-                                                        <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="FXg-Df-jpj" viewBased="YES" indentationPerLevel="16" outlineTableColumn="5tf-3V-66h" id="72f-rY-Rui">
-                                                            <rect key="frame" x="0.0" y="0.0" width="353" height="343"/>
+                                                        <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="16" outlineTableColumn="5tf-3V-66h" id="72f-rY-Rui">
+                                                            <rect key="frame" x="0.0" y="0.0" width="353" height="365"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <size key="intercellSpacing" width="3" height="2"/>
                                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -895,14 +895,10 @@
                                                     <rect key="frame" x="1" y="583" width="353" height="16"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </scroller>
-                                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="faD-EV-3tZ">
+                                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="faD-EV-3tZ">
                                                     <rect key="frame" x="224" y="17" width="15" height="102"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </scroller>
-                                                <tableHeaderView key="headerView" id="FXg-Df-jpj">
-                                                    <rect key="frame" x="0.0" y="0.0" width="353" height="23"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                </tableHeaderView>
                                             </scrollView>
                                         </subviews>
                                         <constraints>
