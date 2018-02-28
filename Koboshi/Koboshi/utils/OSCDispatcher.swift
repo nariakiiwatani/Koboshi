@@ -39,3 +39,26 @@ class OSCDispatcher : OSCServerDelegateExt
 	}
 
 }
+
+class OSCServerMulti
+{
+	private var servers = [Int:(OSCServer,OSCDispatcher)]()
+	private func createServer(port:Int) -> (OSCServer,OSCDispatcher) {
+		let server = OSCServer(address: "", port: port)
+		let dispatcher = OSCDispatcher()
+		server.delegate = dispatcher
+		server.running = true
+		servers.updateValue((server, dispatcher), forKey: port)
+		return servers[port]!
+	}
+	private func getServer(port:Int) -> (OSCServer,OSCDispatcher) {
+		return servers[port] ?? createServer(port: port)
+	}
+	func register(port:Int, receiver:OSCServerDelegateExt) {
+		getServer(port: port).1.add(receiver)
+	}
+	func unregister(port:Int, receiver:OSCServerDelegateExt) {
+		getServer(port: port).1.remove(receiver)
+	}
+	static var global = OSCServerMulti()
+}

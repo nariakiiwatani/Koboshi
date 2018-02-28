@@ -12,17 +12,12 @@ import SwiftOSC
 
 class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
 
-	let client = OSCClient(address:"localhost", port:9000)
-	var oscServer = OSCServer(address:"", port:9000)
-	var oscDispatcher = OSCDispatcher()
 	@IBOutlet weak var tableView : NSTableView!
 	@IBOutlet weak var editor : StatementEditor!
 	var statements : [Statement] = []
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
-//		oscServer.delegate = oscDispatcher
-//		oscServer.start()
+
 		if let data = UserDefaults.standard.value(forKey: "data") as? [Data] {
 			data.forEach{
 				if let json = try? JSON(data: $0) {

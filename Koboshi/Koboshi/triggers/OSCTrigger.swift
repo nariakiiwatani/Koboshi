@@ -11,13 +11,19 @@ import SwiftOSC
 
 class OSCTrigger : Trigger, OSCServerDelegateExt
 {
-	var type: TriggerType { return .osc(messageComparator) }
+	var type: TriggerType { return .osc(port, messageComparator) }
 
 	weak var delegate: TriggerDelegate?
 	private var messageComparator : OSCMessageCompare
+	var port : Int
 	
-	init(withComparator comparator:OSCMessageCompare) {
+	init(port: Int, withComparator comparator:OSCMessageCompare) {
 		messageComparator = comparator
+		self.port = port
+		OSCServerMulti.global.register(port: port, receiver: self)
+	}
+	deinit {
+		OSCServerMulti.global.unregister(port: port, receiver: self)
 	}
 	var enable : Bool = false
 
