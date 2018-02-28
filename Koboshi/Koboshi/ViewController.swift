@@ -29,6 +29,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 		else {
 			newStatement()
 		}
+		tableView.reloadData()
 	}
 	
 	override func viewDidAppear() {
