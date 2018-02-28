@@ -116,7 +116,9 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 		}
 		return true
 	}
+}
 
+extension ViewController {
 	func saveDocument(_ sender: Any) {
 		if filepath == nil {
 			saveDocumentAs(sender)
@@ -132,25 +134,75 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 			let data = statements.reduce(JSON([]), { (json, statement) -> JSON in
 				return JSON(json.arrayValue + [statement.json])
 			})
-			try data.rawString()?.write( toFile: filepath!.path, atomically: false, encoding: .utf8 )
+			try data.rawString()?.write(toFile: filepath!.path, atomically: false, encoding: .utf8)
 		} catch {
 		}
 	}
 	func saveDocumentAs(_ sender: Any) {
-		let savePanel = NSSavePanel()
-		savePanel.canCreateDirectories = true
-		savePanel.showsTagField = false
+		let panel = NSSavePanel()
+		panel.canCreateDirectories = true
+		panel.showsTagField = false
 		if let currentFile = filepath {
-			savePanel.nameFieldStringValue = currentFile.lastPathComponent
-			savePanel.directoryURL = currentFile.deletingLastPathComponent()
+			panel.nameFieldStringValue = currentFile.lastPathComponent
+			panel.directoryURL = currentFile.deletingLastPathComponent()
 		}
-		savePanel.begin { (result) in
+		panel.begin { (result) in
 			if result == NSFileHandlingPanelOKButton {
-				guard let url = savePanel.url else { return }
+				guard let url = panel.url else { return }
 				self.filepath = url
 				self.saveDocument(sender)
 			}
 		}
+	}
+	func openDocument(_ sender: Any) {
+		let panel = NSOpenPanel()
+		panel.allowsMultipleSelection = false
+		panel.canChooseDirectories = false
+		panel.canCreateDirectories = true
+		panel.canChooseFiles = true
+		panel.allowedFileTypes = ["json"]
+		if let currentFile = filepath {
+			panel.nameFieldStringValue = currentFile.lastPathComponent
+			panel.directoryURL = currentFile.deletingLastPathComponent()
+		}
+		panel.begin { (result) in
+			if result == NSFileHandlingPanelOKButton {
+				guard let url = panel.url else { return }
+				self.filepath = url
+				self.statements.removeAll()
+				self.importFromFile(url)
+			}
+		}
+	}
+	func importDocument(_ sender: Any) {
+		let panel = NSOpenPanel()
+		panel.allowsMultipleSelection = false
+		panel.canChooseDirectories = false
+		panel.canCreateDirectories = true
+		panel.canChooseFiles = true
+		panel.allowedFileTypes = ["json"]
+		if let currentFile = filepath {
+			panel.nameFieldStringValue = currentFile.lastPathComponent
+			panel.directoryURL = currentFile.deletingLastPathComponent()
+		}
+		panel.begin { (result) in
+			if result == NSFileHandlingPanelOKButton {
+				guard let url = panel.url else { return }
+				self.importFromFile(url)
+			}
+		}
+	}
+	func importFromFile(_ file:URL) {
+		do {
+			let data = try String(contentsOf: file, encoding: .utf8)
+			let json = JSON(parseJSON: data)
+			_ = json.array?.map{statements.append(Statement(withJSON: $0))}
+			tableView.reloadData()
+			if !statements.isEmpty {
+				tableView.selectRowIndexes([0], byExtendingSelection: false)
+			}
+		} catch {                
+		} 
 	}
 }
 

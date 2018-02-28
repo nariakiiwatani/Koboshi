@@ -99,6 +99,11 @@
                                                 <action selector="saveDocumentAs:" target="Ady-hI-5gd" id="mDf-zr-I0C"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem title="Import..." keyEquivalent="i" id="y1s-pk-kPb">
+                                            <connections>
+                                                <action selector="importDocument:" target="Ady-hI-5gd" id="sUW-mO-n0I"/>
+                                            </connections>
+                                        </menuItem>
                                         <menuItem title="Revert to Saved" keyEquivalent="r" id="KaW-ft-85H">
                                             <connections>
                                                 <action selector="revertDocumentToSaved:" target="Ady-hI-5gd" id="iJ3-Pv-kwq"/>
