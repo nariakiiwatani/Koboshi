@@ -1,14 +1,25 @@
 # Koboshi
 
-アプリが立ち上がってなかったら立ち上げるツール
+Run things programmatically
 
-左テーブルからデータを選択して右で編集  
--> `Save Changes`で反映  
+## example
 
-セーブ/ロードは起動時と終了時に自動でキャッシュ  
+- Restart app automatically when crashed
+- Execute shell script repeatedly
+- Launch app by osc trigger
 
-## TODOs
+![Restart Google Chrome automatically when crashed](./readme_images/watching_app.png)
+![Launch app by osc trigger](./readme_images/osc_launching.png)
 
-- 設定ファイルのエクスポート/インポート
-- チェック間隔を設定できるようにする
-- OSCを受け取ったらチェックする機能追加
+
+# LICENSE
+
+MIT LICENSE  
+
+Copyright 2018 nariakiiwatani
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
