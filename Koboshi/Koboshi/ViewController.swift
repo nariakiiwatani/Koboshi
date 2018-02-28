@@ -14,6 +14,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 
 	@IBOutlet weak var tableView : NSTableView!
 	@IBOutlet weak var editor : StatementEditor!
+	var filepath : URL?
 	var statements : [Statement] = []
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -116,5 +117,40 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
 		return true
 	}
 
+	func saveDocument(_ sender: Any) {
+		if filepath == nil {
+			saveDocumentAs(sender)
+			return
+		}
+		assert(filepath != nil)
+		if tableView.selectedRow >= 0 && editor.edited {
+			let statement = statements[tableView.selectedRow]
+			statement.json = statement.json.merged(editor.json)
+			editor.edited = false
+		}
+		do {
+			let data = statements.reduce(JSON([]), { (json, statement) -> JSON in
+				return JSON(json.arrayValue + [statement.json])
+			})
+			try data.rawString()?.write( toFile: filepath!.path, atomically: false, encoding: .utf8 )
+		} catch {
+		}
+	}
+	func saveDocumentAs(_ sender: Any) {
+		let savePanel = NSSavePanel()
+		savePanel.canCreateDirectories = true
+		savePanel.showsTagField = false
+		if let currentFile = filepath {
+			savePanel.nameFieldStringValue = currentFile.lastPathComponent
+			savePanel.directoryURL = currentFile.deletingLastPathComponent()
+		}
+		savePanel.begin { (result) in
+			if result == NSFileHandlingPanelOKButton {
+				guard let url = savePanel.url else { return }
+				self.filepath = url
+				self.saveDocument(sender)
+			}
+		}
+	}
 }
 
